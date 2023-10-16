@@ -16,7 +16,7 @@ abstract class PagePath {
 class AppRouter {
   AppRouter() {
     goRouter = GoRouter(
-      initialLocation: PageName.slaughterhouse,
+      initialLocation: PagePath.slaughterhouse,
       debugLogDiagnostics: true,
       routes: _routes,
     );
@@ -26,8 +26,7 @@ class AppRouter {
 
   final List<RouteBase> _routes = [
     ShellRoute(
-      builder: (context, state, child) =>
-          SharedScaffold(selectedIndex: 0, body: child),
+      builder: (context, state, child) => SharedScaffold(body: child),
       routes: [
         GoRoute(
           name: PageName.slaughterhouse,

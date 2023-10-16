@@ -4,12 +4,10 @@ import 'package:uboyniy_cex/util/util.dart';
 
 class SharedScaffold extends StatefulWidget {
   const SharedScaffold({
-    required this.selectedIndex,
     required this.body,
     super.key,
   });
 
-  final int selectedIndex;
   final Widget body;
 
   @override
@@ -20,7 +18,9 @@ class _SharedScaffoldState extends State<SharedScaffold> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Убойный цех')),
+        appBar: AppBar(
+          title: const Text('Убойный цех'),
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _selectedIndex,
           onDestinationSelected: (value) => setState(() {
