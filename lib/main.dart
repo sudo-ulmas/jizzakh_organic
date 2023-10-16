@@ -7,7 +7,8 @@ import 'package:uboyniy_cex/util/util.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: await getTemporaryDirectory());
+    storageDirectory: await getTemporaryDirectory(),
+  );
   runApp(const MyApp());
 }
 
@@ -16,27 +17,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return BlocProvider<ThemeCubit>(
-        create: (context) => ThemeCubit(),
-        child: BlocBuilder<ThemeCubit, ThemeMode>(
-          builder: (context, state) {
-            return MaterialApp(
-              title: 'Flutter Demo',
-              theme: AppTheme().light,
-              darkTheme: AppTheme().dark,
-              themeMode: state,
-              home: const MyHomePage(title: 'Flutter Demo Home Page'),
-            );
-          },
-        ),
-      );
-    });
+    return Builder(
+      builder: (context) {
+        return BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(),
+          child: BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, state) {
+              return MaterialApp(
+                title: 'Flutter Demo',
+                theme: AppTheme().light,
+                darkTheme: AppTheme().dark,
+                themeMode: state,
+                home: const MyHomePage(title: 'Flutter Demo Home Page'),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({required this.title, super.key});
 
   final String title;
 
