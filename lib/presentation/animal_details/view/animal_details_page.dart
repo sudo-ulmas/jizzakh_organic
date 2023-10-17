@@ -26,44 +26,52 @@ class _AnimalDetailsPageState extends State<AnimalDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const SharedAppbar(title: 'Ввод данных животного'),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            InputField(
-              title: 'Наименование',
-              controller: _titleController,
-              enabled: false,
-            ),
-            const SizedBox(height: 24),
-            InputField(
-              title: 'Бирка',
-              controller: _tagController,
-              enabled: false,
-            ),
-            const SizedBox(height: 24),
-            InputField(
-              title: 'Вес животного (кг)',
-              controller: _weightController,
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: () => context.push(
-                  '${PagePath.animals}/${PagePath.addNomenclature}',
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const SharedAppbar(title: 'Ввод данных животного'),
+        body: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: constraints.maxHeight - 48),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    InputField(
+                      title: 'Наименование',
+                      controller: _titleController,
+                      enabled: false,
+                    ),
+                    const SizedBox(height: 24),
+                    InputField(
+                      title: 'Бирка',
+                      controller: _tagController,
+                      enabled: false,
+                    ),
+                    const SizedBox(height: 24),
+                    InputField(
+                      title: 'Вес животного (кг)',
+                      controller: _weightController,
+                      countingStrategy: CountingStrategy.weight,
+                    ),
+                    const SizedBox(height: 24),
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () => context.push(
+                          '${PagePath.animals}/${PagePath.addNomenclature}',
+                        ),
+                        child: const Text('Далее'),
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Text('Далее'),
               ),
             ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   void dispose() {
