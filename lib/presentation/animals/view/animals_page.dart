@@ -4,34 +4,38 @@ import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/animals/bloc/animals_bloc.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
-import 'package:uboyniy_cex/util/route/router.dart';
+import 'package:uboyniy_cex/util/util.dart';
+import 'package:uboyniy_cex/widget/widget.dart';
 
 class AnimalsPage extends StatelessWidget {
   const AnimalsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          AnimalsBloc(animalRepository: context.read<AnimalRepository>())
-            ..add(const AnimalsEvent.loadAnimals()),
-      child: BlocBuilder<AnimalsBloc, AnimalsState>(
-        builder: (context, state) {
-          return switch (state) {
-            AnimalsSuccess(:final animals) => ListView.separated(
-                itemCount: 100,
-                itemBuilder: (context, index) =>
-                    AnimalTile(animal: animals[index]),
-                separatorBuilder: (context, index) => const Divider(
-                  indent: 32,
-                  endIndent: 32,
+    return Scaffold(
+      appBar: const SharedAppbar(title: 'Животные в загоне'),
+      body: BlocProvider(
+        create: (context) =>
+            AnimalsBloc(animalRepository: context.read<AnimalRepository>())
+              ..add(const AnimalsEvent.loadAnimals()),
+        child: BlocBuilder<AnimalsBloc, AnimalsState>(
+          builder: (context, state) {
+            return switch (state) {
+              AnimalsSuccess(:final animals) => ListView.separated(
+                  itemCount: 100,
+                  itemBuilder: (context, index) =>
+                      AnimalTile(animal: animals[index]),
+                  separatorBuilder: (context, index) => const Divider(
+                    indent: 32,
+                    endIndent: 32,
+                  ),
                 ),
-              ),
-            _ => const Center(
-                child: CircularProgressIndicator(),
-              ),
-          };
-        },
+              _ => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+            };
+          },
+        ),
       ),
     );
   }
@@ -44,7 +48,10 @@ class AnimalTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => context.go('${PagePath.animals}/${PagePath.animalDetails}'),
+      onTap: () => context.go(
+        '${PagePath.animals}/${PagePath.animalDetails}',
+        extra: animal,
+      ),
       leading: Text('\u2116 ${animal.id}'),
       subtitle: Text(animal.tag),
       title: Text(animal.title),

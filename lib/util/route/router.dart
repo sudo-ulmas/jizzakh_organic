@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
@@ -7,6 +8,7 @@ abstract class PagePath {
   static const String animals = '/animals';
   static const String orders = '/orders';
   static const String animalDetails = 'animal-details';
+  static const String addNomenclature = 'add-nomenclature';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -41,8 +43,13 @@ class AppRouter {
           routes: [
             GoRoute(
               path: PagePath.animalDetails,
-              builder: (context, state) => const AnimalDetailsPage(),
+              builder: (context, state) =>
+                  AnimalDetailsPage(animal: state.extra! as AnimalModel),
             ),
+            GoRoute(
+              path: PagePath.addNomenclature,
+              builder: (context, state) => const AddNomenclaturePage(),
+            )
           ],
         ),
         GoRoute(
