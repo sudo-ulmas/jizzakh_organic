@@ -47,9 +47,11 @@ class AppRouter {
                   AnimalDetailsPage(animal: state.extra! as AnimalModel),
             ),
             GoRoute(
+              parentNavigatorKey: _rootNavigatorKey,
               path: PagePath.addNomenclature,
-              builder: (context, state) => const AddNomenclaturePage(),
-            )
+              builder: (context, state) =>
+                  AddNomenclaturePage(animal: state.extra! as AnimalModel),
+            ),
           ],
         ),
         GoRoute(

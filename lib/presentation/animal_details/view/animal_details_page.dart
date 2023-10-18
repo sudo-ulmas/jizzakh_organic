@@ -16,6 +16,7 @@ class _AnimalDetailsPageState extends State<AnimalDetailsPage> {
   late TextEditingController _titleController;
   late TextEditingController _tagController;
   late TextEditingController _weightController;
+  bool weightIsValid = true;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _AnimalDetailsPageState extends State<AnimalDetailsPage> {
                   BoxConstraints(minHeight: constraints.maxHeight - 48),
               child: IntrinsicHeight(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InputField(
                       title: 'Наименование',
@@ -54,14 +56,35 @@ class _AnimalDetailsPageState extends State<AnimalDetailsPage> {
                       controller: _weightController,
                       countingStrategy: CountingStrategy.weight,
                     ),
+                    if (!weightIsValid)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 3),
+                        child: Text(
+                          'Введенный вес не действителен',
+                          style: context.theme.textTheme.labelMedium
+                              ?.copyWith(color: Colors.red),
+                        ),
+                      ),
                     const SizedBox(height: 24),
                     const Spacer(),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () => context.push(
-                          '${PagePath.animals}/${PagePath.addNomenclature}',
-                        ),
+                        onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          setState(() {
+                            weightIsValid =
+                                _weightController.text.validateWeightKg;
+                          });
+                          if (weightIsValid) {
+                            context.push(
+                              '${PagePath.animals}/${PagePath.addNomenclature}',
+                              extra: widget.animal.copyWith(
+                                weight: _weightController.text,
+                              ),
+                            );
+                          }
+                        },
                         child: const Text('Далее'),
                       ),
                     ),

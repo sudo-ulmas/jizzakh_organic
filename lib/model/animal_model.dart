@@ -9,6 +9,7 @@ class AnimalModel with _$AnimalModel {
     required int id,
     required String title,
     required String tag,
+    String? weight,
   }) = _AnimalModel;
 
   factory AnimalModel.fromJson(Map<String, dynamic> json) =>
