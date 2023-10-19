@@ -73,7 +73,9 @@ class _NomenclatureCardState extends State<NomenclatureCard> {
                             context
                                 .read<AddNomenclatureCubit>()
                                 .editNomenclature(
-                                    model, widget.animalPart.listIndex);
+                                  model,
+                                  widget.animalPart.listIndex,
+                                );
                           }
                         });
                       },

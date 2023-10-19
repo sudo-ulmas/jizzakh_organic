@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/add_nomenclature/view/cubit/add_nomenclature_cubit.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
+import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 class AddNomenclaturePage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                           ),
                         ),
                       ),
-                      Padding(
+                      Container(
                         padding: const EdgeInsets.fromLTRB(48, 20, 48, 28),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +75,31 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                               label: const Text('Добавить'),
                             ),
                             FilledButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                final isValid = context
+                                    .read<AddNomenclatureCubit>()
+                                    .validate();
+                                if (isValid) {
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Column(
+                                        children: [
+                                          Text(
+                                            '''Ввуденные данные неправильны! Пожалйста заполните все поля и убедитесь что введенные количества дейсвителены.''',
+                                            style: context
+                                                .theme.textTheme.bodyLarge
+                                                ?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
                               child: const Text('Далее'),
                             ),
                           ],

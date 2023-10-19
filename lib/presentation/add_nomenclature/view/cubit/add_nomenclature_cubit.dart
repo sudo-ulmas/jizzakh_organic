@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:uboyniy_cex/model/model.dart';
+import 'package:uboyniy_cex/util/util.dart';
 
 class AddNomenclatureCubit extends Cubit<List<AnimalPartModel>> {
   AddNomenclatureCubit() : super([AnimalPartModel.empty(0)]);
@@ -34,5 +35,17 @@ class AddNomenclatureCubit extends Cubit<List<AnimalPartModel>> {
     );
 
     emit(newState);
+  }
+
+  bool validate() {
+    return state.every((element) {
+      final countingStrategy = element.nomenclature.countingStrategy;
+      final isNomenclatureEmpty = element.nomenclature.id == 0;
+      final isCountValid = countingStrategy == CountingStrategy.weight
+          ? element.count.validateWeightKg
+          : element.count.validateCount;
+
+      return !isNomenclatureEmpty && isCountValid;
+    });
   }
 }
