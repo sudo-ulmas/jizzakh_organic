@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:uboyniy_cex/presentation/add_nomenclature/view/bloc/nomenclatures_bloc.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
 
@@ -50,6 +51,10 @@ class AppProvider extends StatelessWidget {
           Provider(create: (context) => AppRouter()),
           Provider<AnimalRepository>(
             create: (context) => FakeAnimalRepository(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                NomenclaturesBloc(animalRepository: context.read()),
           ),
         ],
         child: child,

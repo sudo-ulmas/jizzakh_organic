@@ -41,11 +41,13 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                               NomenclatureCard(
                             animation: animation,
                             removable: state.length > 1,
+                            animalPart: state[index],
                             removeNomenclature: () {
                               _listKey.currentState?.removeItem(
                                 index,
                                 (_, animation) => NomenclatureCard(
                                   animation: animation,
+                                  animalPart: state[index - 1],
                                   removeNomenclature: () {},
                                 ),
                               );

@@ -8,6 +8,7 @@ class InputField extends StatelessWidget {
     this.enabled = true,
     this.controller,
     this.countingStrategy,
+    this.onChanged,
     super.key,
   });
 
@@ -15,6 +16,7 @@ class InputField extends StatelessWidget {
   final String title;
   final bool enabled;
   final CountingStrategy? countingStrategy;
+  final void Function(String text)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class InputField extends StatelessWidget {
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
+          onChanged: onChanged,
           keyboardType: countingStrategy != null
               ? TextInputType.numberWithOptions(
                   decimal: countingStrategy == CountingStrategy.weight,
