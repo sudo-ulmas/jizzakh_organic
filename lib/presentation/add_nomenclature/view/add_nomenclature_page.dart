@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/add_nomenclature/view/cubit/add_nomenclature_cubit.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
@@ -48,7 +49,8 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                                 index,
                                 (_, animation) => NomenclatureCard(
                                   animation: animation,
-                                  animalPart: state[index - 1],
+                                  animalPart:
+                                      index == 0 ? state[0] : state[index - 1],
                                   removeNomenclature: () {},
                                 ),
                               );
@@ -80,6 +82,10 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                                     .read<AddNomenclatureCubit>()
                                     .validate();
                                 if (isValid) {
+                                  context.push(
+                                    '${PagePath.animals}/${PagePath.checkNomenclature}',
+                                    extra: (state, widget.animal),
+                                  );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

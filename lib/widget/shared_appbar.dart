@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/util/util.dart';
@@ -8,7 +9,10 @@ class SharedAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-        title: Text(title),
+        title: AutoSizeText(
+          title,
+          maxLines: 1,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.sunny),
