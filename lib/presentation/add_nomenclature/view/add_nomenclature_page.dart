@@ -83,7 +83,7 @@ class _AddNomenclaturePageState extends State<AddNomenclaturePage> {
                                     .validate();
                                 if (isValid) {
                                   context.push(
-                                    '${PagePath.animals}/${PagePath.checkNomenclature}',
+                                    '${PagePath.animals}/${PagePath.createDocument}',
                                     extra: (state, widget.animal),
                                   );
                                 } else {

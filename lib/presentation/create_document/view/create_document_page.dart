@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/model/model.dart';
+import 'package:uboyniy_cex/presentation/create_document/bloc/create_document_bloc.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
-class CheckNomenclaturePage extends StatelessWidget {
-  const CheckNomenclaturePage({
+class CreateDocumentPage extends StatelessWidget {
+  const CreateDocumentPage({
     required this.animalParts,
     required this.animal,
     super.key,
@@ -15,10 +18,11 @@ class CheckNomenclaturePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const SharedAppbar(title: 'Проверка введенных данных'),
-      body: LayoutBuilder(
-        builder: (context, constraints) => CustomScrollView(
+    return BlocProvider(
+      create: (context) => CreateDocumentBloc(animalRepository: context.read()),
+      child: Scaffold(
+        appBar: const SharedAppbar(title: 'Проверка введенных данных'),
+        body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
@@ -71,9 +75,23 @@ class CheckNomenclaturePage extends StatelessWidget {
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverToBoxAdapter(
-                child: FilledButton(
-                  onPressed: () {},
-                  child: const Text('Создать документ'),
+                child: BlocConsumer<CreateDocumentBloc, CreateDocumentState>(
+                  listener: (context, state) {
+                    if (state is CreateDocumentSuccess) {
+                      context.go(PagePath.orders);
+                    }
+                  },
+                  builder: (context, state) => FilledButton(
+                    onPressed: () => context
+                        .read<CreateDocumentBloc>()
+                        .add(const CreateDocumentEvent.create()),
+                    child: state is CreateDocumentInProgress
+                        ? const CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: Colors.white,
+                          )
+                        : const Text('Создать документ'),
+                  ),
                 ),
               ),
             ),

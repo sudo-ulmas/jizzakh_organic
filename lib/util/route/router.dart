@@ -9,7 +9,7 @@ abstract class PagePath {
   static const String orders = '/orders';
   static const String animalDetails = 'animal-details';
   static const String addNomenclature = 'add-nomenclature';
-  static const String checkNomenclature = 'check-nomenclature';
+  static const String createDocument = 'create-document';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -55,11 +55,11 @@ class AppRouter {
             ),
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
-              path: PagePath.checkNomenclature,
+              path: PagePath.createDocument,
               builder: (context, state) {
                 final extra =
                     state.extra! as (List<AnimalPartModel>, AnimalModel);
-                return CheckNomenclaturePage(
+                return CreateDocumentPage(
                   animalParts: extra.$1,
                   animal: extra.$2,
                 );

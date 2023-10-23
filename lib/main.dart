@@ -52,6 +52,9 @@ class AppProvider extends StatelessWidget {
           Provider<AnimalRepository>(
             create: (context) => FakeAnimalRepository(),
           ),
+          Provider<OrderRepository>(
+            create: (context) => FakeOrderRepository(),
+          ),
           BlocProvider(
             create: (context) =>
                 NomenclaturesBloc(animalRepository: context.read()),

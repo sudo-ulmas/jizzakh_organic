@@ -1,8 +1,6 @@
 import 'dart:math';
 
-import 'package:uboyniy_cex/model/animal_model.dart';
-import 'package:uboyniy_cex/model/counting_strategy.dart';
-import 'package:uboyniy_cex/model/nomenclature_model.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 
 class FakeAnimalRepository implements AnimalRepository {
@@ -50,5 +48,10 @@ class FakeAnimalRepository implements AnimalRepository {
         countingStrategy: CountingStrategy.values[rng.nextInt(2)],
       );
     });
+  }
+
+  @override
+  Future<void> createDocument() async {
+    await Future<void>.delayed(const Duration(seconds: 1));
   }
 }

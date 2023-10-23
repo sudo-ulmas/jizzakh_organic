@@ -1,0 +1,12 @@
+part of 'orders_bloc.dart';
+
+@freezed
+class OrdersState with _$OrdersState {
+  const factory OrdersState.initial() = OrdersInitial;
+
+  const factory OrdersState.inProgress() = OrdersInProgress;
+
+  const factory OrdersState.error() = OrdersError;
+
+  const factory OrdersState.success(List<OrderModel> orders) = OrdersSuccess;
+}

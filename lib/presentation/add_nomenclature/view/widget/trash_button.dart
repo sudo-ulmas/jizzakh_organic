@@ -10,8 +10,18 @@ class TrashButton extends StatelessWidget {
         onPressed: () => showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Удалить'),
-            content: const Text('Вы уверены что хотите удалить номенклатуру?'),
+            title: Text(
+              'Удалить',
+              style: TextStyle(
+                color: context.theme.colorScheme.onSurface,
+              ),
+            ),
+            content: Text(
+              'Вы уверены что хотите удалить номенклатуру?',
+              style: TextStyle(
+                color: context.theme.colorScheme.onSurface,
+              ),
+            ),
             actions: [
               TextButton(
                 onPressed: () => context.pop(false),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/util/util.dart';
 
-class SharedScaffold extends StatefulWidget {
+class SharedScaffold extends StatelessWidget {
   const SharedScaffold({
     required this.body,
     super.key,
@@ -11,21 +11,16 @@ class SharedScaffold extends StatefulWidget {
   final Widget body;
 
   @override
-  State<SharedScaffold> createState() => _SharedScaffoldState();
-}
-
-class _SharedScaffoldState extends State<SharedScaffold> {
-  int _selectedIndex = 0;
-  @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           bottomNavigationBar: NavigationBar(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (value) => setState(() {
-              _selectedIndex = value;
-              context.go(value == 0 ? PagePath.animals : PagePath.orders);
-            }),
+            selectedIndex:
+                GoRouterState.of(context).fullPath?.split('/')[1] == 'animals'
+                    ? 0
+                    : 1,
+            onDestinationSelected: (value) =>
+                context.go(value == 0 ? PagePath.animals : PagePath.orders),
             destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.room_outlined),
@@ -39,7 +34,7 @@ class _SharedScaffoldState extends State<SharedScaffold> {
               ),
             ],
           ),
-          body: widget.body,
+          body: body,
         ),
       );
 }
