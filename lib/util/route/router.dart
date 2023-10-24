@@ -10,6 +10,7 @@ abstract class PagePath {
   static const String animalDetails = 'animal-details';
   static const String addNomenclature = 'add-nomenclature';
   static const String createDocument = 'create-document';
+  static const String shipment = 'shipment';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -76,6 +77,18 @@ class AppRouter {
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
           ),
+          routes: [
+            GoRoute(
+              path: PagePath.shipment,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const ShipmentPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        FadeTransition(opacity: animation, child: child),
+              ),
+            ),
+          ],
         ),
       ],
     ),

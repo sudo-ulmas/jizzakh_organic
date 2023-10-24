@@ -19,7 +19,7 @@ class FakeOrderRepository implements OrderRepository {
   ];
   @override
   Future<List<OrderModel>> getOrders() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     final rng = Random();
     final orders = <OrderModel>[];
     for (var i = 0; i < 100; i += 1) {

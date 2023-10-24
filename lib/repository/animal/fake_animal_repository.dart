@@ -26,7 +26,7 @@ class FakeAnimalRepository implements AnimalRepository {
   ];
   @override
   Future<List<AnimalModel>> getAnimals() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(microseconds: 300));
     return List.generate(100, (index) {
       final rng = Random();
       return AnimalModel(
@@ -39,7 +39,7 @@ class FakeAnimalRepository implements AnimalRepository {
 
   @override
   Future<List<NomenclatureModel>> getNomenclatures() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     return List.generate(100, (index) {
       final rng = Random();
       return NomenclatureModel(

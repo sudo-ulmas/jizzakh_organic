@@ -64,4 +64,8 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/platform_sdk_v4.1.0326.jar')
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}
