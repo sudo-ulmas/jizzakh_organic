@@ -5,6 +5,7 @@ import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 abstract class PagePath {
+  static const String loginRoute = '/login';
   static const String animals = '/animals';
   static const String orders = '/orders';
   static const String animalDetails = 'animal-details';
@@ -19,7 +20,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 class AppRouter {
   AppRouter() {
     goRouter = GoRouter(
-      initialLocation: PagePath.animals,
+      initialLocation: PagePath.loginRoute,
       debugLogDiagnostics: true,
       navigatorKey: _rootNavigatorKey,
       routes: _routes,
@@ -29,6 +30,15 @@ class AppRouter {
   late GoRouter goRouter;
 
   final List<RouteBase> _routes = [
+    GoRoute(
+      path: PagePath.loginRoute,
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: const LoginPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) => SharedScaffold(body: child),

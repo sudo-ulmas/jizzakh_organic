@@ -1,7 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/model/model.dart';
-import 'package:uboyniy_cex/presentation/add_nomenclature/view/bloc/nomenclatures_bloc.dart';
 import 'package:uboyniy_cex/presentation/add_nomenclature/view/cubit/add_nomenclature_cubit.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/util/util.dart';
@@ -59,9 +59,6 @@ class _NomenclatureCardState extends State<NomenclatureCard> {
                     const SizedBox(height: 6),
                     GestureDetector(
                       onTap: () {
-                        context
-                            .read<NomenclaturesBloc>()
-                            .add(const NomenclaturesEvent.loadNomenclatures());
                         showModalBottomSheet<NomenclatureModel>(
                           context: context,
                           isScrollControlled: true,
@@ -104,11 +101,14 @@ class _NomenclatureCardState extends State<NomenclatureCard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              widget.animalPart.nomenclature.title,
-                              style:
-                                  context.theme.textTheme.bodyLarge?.copyWith(
-                                color: context.theme.colorScheme.onSurface,
+                            Flexible(
+                              child: AutoSizeText(
+                                widget.animalPart.nomenclature.title,
+                                style:
+                                    context.theme.textTheme.bodyLarge?.copyWith(
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                                maxLines: 1,
                               ),
                             ),
                             Icon(

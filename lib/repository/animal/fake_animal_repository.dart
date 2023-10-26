@@ -43,7 +43,7 @@ class FakeAnimalRepository implements AnimalRepository {
     return List.generate(100, (index) {
       final rng = Random();
       return NomenclatureModel(
-        id: index + 1,
+        id: '${index + 1}',
         title: _animalParts[rng.nextInt(4)],
         countingStrategy: CountingStrategy.values[rng.nextInt(2)],
       );

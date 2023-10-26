@@ -40,7 +40,7 @@ class AddNomenclatureCubit extends Cubit<List<AnimalPartModel>> {
   bool validate() {
     return state.every((element) {
       final countingStrategy = element.nomenclature.countingStrategy;
-      final isNomenclatureEmpty = element.nomenclature.id == 0;
+      final isNomenclatureEmpty = element.nomenclature.id == '0';
       final isCountValid = countingStrategy == CountingStrategy.weight
           ? element.count.validateWeightKg
           : element.count.validateCount;

@@ -18,7 +18,7 @@ class AnimalPartModel with _$AnimalPartModel {
   factory AnimalPartModel.empty(int index) => AnimalPartModel(
         listIndex: index,
         nomenclature: NomenclatureModel(
-          id: 0,
+          id: '0',
           title: '',
           countingStrategy: CountingStrategy.weight,
         ),
