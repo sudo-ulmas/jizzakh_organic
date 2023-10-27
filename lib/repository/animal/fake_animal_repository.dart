@@ -18,34 +18,16 @@ class FakeAnimalRepository implements AnimalRepository {
     '120211',
   ];
 
-  static const _animalParts = <String>[
-    'Туша, говядина',
-    'Четвертина, говядина ',
-    'Голова, корова',
-    'Нога, говядина',
-  ];
   @override
   Future<List<AnimalModel>> getAnimals() async {
     await Future<void>.delayed(const Duration(microseconds: 300));
     return List.generate(100, (index) {
       final rng = Random();
       return AnimalModel(
-        id: index + 1,
+        id: '${index + 1}',
         title: _animalTitles[rng.nextInt(4)],
         tag: _animalTags[rng.nextInt(4)],
-      );
-    });
-  }
-
-  @override
-  Future<List<NomenclatureModel>> getNomenclatures() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    return List.generate(100, (index) {
-      final rng = Random();
-      return NomenclatureModel(
-        id: '${index + 1}',
-        title: _animalParts[rng.nextInt(4)],
-        countingStrategy: CountingStrategy.values[rng.nextInt(2)],
+        quantity: 0,
       );
     });
   }

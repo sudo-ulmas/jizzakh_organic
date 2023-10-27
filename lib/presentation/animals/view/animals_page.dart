@@ -22,9 +22,11 @@ class AnimalsPage extends StatelessWidget {
           builder: (context, state) {
             return switch (state) {
               AnimalsSuccess(:final animals) => ListView.separated(
-                  itemCount: 100,
-                  itemBuilder: (context, index) =>
-                      AnimalTile(animal: animals[index]),
+                  itemCount: animals.length,
+                  itemBuilder: (context, index) => AnimalTile(
+                    animal: animals[index],
+                    index: index,
+                  ),
                   separatorBuilder: (context, index) => const Divider(
                     indent: 32,
                     endIndent: 32,
@@ -42,8 +44,9 @@ class AnimalsPage extends StatelessWidget {
 }
 
 class AnimalTile extends StatelessWidget {
-  const AnimalTile({required this.animal, super.key});
+  const AnimalTile({required this.animal, required this.index, super.key});
   final AnimalModel animal;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +55,8 @@ class AnimalTile extends StatelessWidget {
         '${PagePath.animals}/${PagePath.animalDetails}',
         extra: animal,
       ),
-      leading: Text('\u2116 ${animal.id}'),
-      subtitle: Text(animal.tag),
+      leading: Text('\u2116 $index'),
+      subtitle: Text('Бирка: ${animal.tag}'),
       title: Text(animal.title),
     );
   }

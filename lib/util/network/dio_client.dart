@@ -16,8 +16,8 @@ class DioClient {
         }
         return false;
       },
-      receiveTimeout: const Duration(seconds: 10),
-      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 20),
     ),
   )..interceptors.add(
       PrettyDioLogger(

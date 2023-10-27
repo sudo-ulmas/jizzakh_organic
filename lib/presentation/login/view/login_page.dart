@@ -46,10 +46,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  InputField(
-                    title: 'Имя пользователя',
-                    controller: _usernameController,
+                  BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
+                      _usernameController.text = state.username;
+                      return InputField(
+                        title: 'Имя пользователя',
+                        controller: _usernameController,
+                      );
+                    },
                   ),
+                  const SizedBox(height: 12),
                   InputField(
                     title: 'Пароль',
                     controller: _passwordController,

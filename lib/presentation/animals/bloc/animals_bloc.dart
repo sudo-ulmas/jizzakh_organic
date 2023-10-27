@@ -25,6 +25,7 @@ class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
       final animals = await _repository.getAnimals();
       emit(AnimalsState.success(animals));
     } catch (e) {
+      print(e.toString());
       emit(const AnimalsState.error());
     }
   }

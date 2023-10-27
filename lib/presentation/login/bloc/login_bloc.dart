@@ -1,15 +1,16 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 part 'login_bloc.freezed.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   LoginBloc({required AuthRepository authRepository})
       : _repository = authRepository,
-        super(const LoginState.initial()) {
+        super(const LoginState.initial(username: '')) {
     on<_LoginButtonPressed>(_login);
   }
 
@@ -20,14 +21,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     try {
-      emit(const LoginState.inProgress());
+      emit(LoginState.inProgress(username: event.username));
       await _repository.login(
         username: event.username,
         password: event.password,
       );
-      emit(const LoginState.success());
+      emit(LoginState.success(username: event.username));
     } catch (e) {
-      emit(const LoginState.error());
+      emit(LoginState.error(username: event.username));
+    }
+  }
+
+  @override
+  LoginState? fromJson(Map<String, dynamic> json) {
+    return LoginState.initial(username: json['username'] as String);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(LoginState state) {
+    if (state is LoginSuccess) {
+      return {'username': state.username};
+    } else {
+      return null;
     }
   }
 }
