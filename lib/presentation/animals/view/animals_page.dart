@@ -55,7 +55,7 @@ class AnimalTile extends StatelessWidget {
         '${PagePath.animals}/${PagePath.animalDetails}',
         extra: animal,
       ),
-      leading: Text('\u2116 $index'),
+      leading: Text('\u2116 ${index + 1}'),
       subtitle: Text('Бирка: ${animal.tag}'),
       title: Text(animal.title),
     );

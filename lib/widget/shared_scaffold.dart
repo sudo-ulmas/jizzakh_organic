@@ -23,13 +23,13 @@ class SharedScaffold extends StatelessWidget {
                 context.go(value == 0 ? PagePath.animals : PagePath.orders),
             destinations: const [
               NavigationDestination(
-                icon: Icon(Icons.room_outlined),
-                selectedIcon: Icon(Icons.room),
+                icon: Icon(Icons.cruelty_free_outlined),
+                selectedIcon: Icon(Icons.cruelty_free),
                 label: 'Животные в загоне',
               ),
               NavigationDestination(
-                icon: Icon(Icons.outlined_flag_outlined),
-                selectedIcon: Icon(Icons.outlined_flag),
+                icon: Icon(Icons.description_outlined),
+                selectedIcon: Icon(Icons.description),
                 label: 'Распоряжения',
               ),
             ],

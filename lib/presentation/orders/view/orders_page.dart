@@ -13,13 +13,32 @@ class OrdersPage extends StatelessWidget {
       create: (context) => OrdersBloc(orderRepository: context.read())
         ..add(const OrdersEvent.loadOrders()),
       child: Scaffold(
-        appBar: const SharedAppbar(title: 'Распоряжения'),
+        appBar: SharedAppbar(
+          title: 'Распоряжения',
+          actions: [
+            IconButton.filledTonal(
+              tooltip: 'Нажмите чтобы узнать',
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => const InfoDialog(),
+                );
+              },
+              icon: const Icon(Icons.info_outline),
+            ),
+          ],
+        ),
         body: BlocBuilder<OrdersBloc, OrdersState>(
           builder: (context, state) => switch (state) {
-            OrdersSuccess(:final orders) => ListView.builder(
+            OrdersSuccess(:final orders) => ListView.separated(
                 itemCount: orders.length,
                 itemBuilder: (context, index) => OrderTile(
                   order: orders[index],
+                ),
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(
+                  indent: 32,
+                  endIndent: 32,
                 ),
               ),
             _ => const Center(

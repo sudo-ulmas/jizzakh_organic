@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 

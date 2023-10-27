@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
-import 'package:uboyniy_cex/util/util.dart';
+import 'package:uboyniy_cex/presentation/shipment/bloc/shipment_bloc.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 class ShipmentPage extends StatefulWidget {
@@ -28,85 +28,35 @@ class _ShipmentPageState extends State<ShipmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
-      body: CustomScrollView(
-        slivers: [
-          const SliverPersistentHeader(
-            pinned: true,
-            delegate: HeaderDelegate(),
-          ),
-          SliverList.builder(
-            itemCount: 100,
-            itemBuilder: (context, index) => const ShipmentTile(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HeaderDelegate extends SliverPersistentHeaderDelegate {
-  const HeaderDelegate([this.height = 50]);
-  final double height;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(
-      color: context.theme.colorScheme.primaryContainer,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(16),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Партия',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return BlocProvider(
+      create: (context) => ShipmentBloc(orderRepository: context.read())
+        ..add(const ShipmentEvent.loadShipment()),
+      child: Scaffold(
+        appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
+        body: CustomScrollView(
+          slivers: [
+            const SliverPersistentHeader(
+              pinned: true,
+              delegate: HeaderDelegate(),
             ),
-          ),
-          Flexible(
-            flex: 3,
-            child: AutoSizeText(
-              'Номенклатура',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 2,
-            ),
-          ),
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Кол-во',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+            BlocBuilder<ShipmentBloc, ShipmentState>(
+              builder: (context, state) => switch (state) {
+                ShipmentSuccess(:final shipments) => SliverList.builder(
+                    itemCount: shipments.length,
+                    itemBuilder: (context, index) => ShipmentTile(
+                      shipment: shipments[index],
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.check_box,
-                  size: 12,
-                ),
-              ],
+                _ => const SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
-  @override
-  double get maxExtent => height;
-
-  @override
-  double get minExtent => height;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }

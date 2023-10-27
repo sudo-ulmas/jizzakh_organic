@@ -12,9 +12,17 @@ class OrderTile extends StatelessWidget {
     return ListTile(
       onTap: () => context.go('${PagePath.orders}/${PagePath.shipment}'),
       title: Text(order.receverName),
-      trailing: Text(order.date),
+      trailing: Text(
+        order.date,
+        style: context.theme.textTheme.labelLarge?.copyWith(
+          color: context.theme.colorScheme.onSurface,
+        ),
+      ),
       subtitle: Text(order.id.toString()),
-      tileColor: order.type.color,
+      leading: Icon(
+        Icons.edit_document,
+        color: order.type.color,
+      ),
     );
   }
 }

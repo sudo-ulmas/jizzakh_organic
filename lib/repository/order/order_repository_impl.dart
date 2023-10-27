@@ -1,9 +1,15 @@
-import 'package:uboyniy_cex/model/order_model.dart';
-import 'package:uboyniy_cex/repository/order/order_repository.dart';
+import 'package:uboyniy_cex/model/model.dart';
+import 'package:uboyniy_cex/repository/repository.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   @override
   Future<List<OrderModel>> getOrders() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ShipmentModel>> getShipments() {
+    // TODO: implement getShipments
     throw UnimplementedError();
   }
 }
