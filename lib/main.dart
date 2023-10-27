@@ -4,7 +4,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uboyniy_cex/presentation/add_nomenclature/view/bloc/nomenclatures_cubit.dart';
-import 'package:uboyniy_cex/repository/animal/animal_repository_decorator.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
 

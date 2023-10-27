@@ -26,6 +26,7 @@ class NomenclatureCard extends StatefulWidget {
 
 class _NomenclatureCardState extends State<NomenclatureCard> {
   final _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void didUpdateWidget(covariant NomenclatureCard oldWidget) {
@@ -73,6 +74,7 @@ class _NomenclatureCardState extends State<NomenclatureCard> {
                                   model,
                                   widget.animalPart.listIndex,
                                 );
+                            FocusScope.of(context).requestFocus(_focusNode);
                           }
                         });
                       },
@@ -121,6 +123,7 @@ class _NomenclatureCardState extends State<NomenclatureCard> {
                     ),
                     const SizedBox(height: 16),
                     InputField(
+                      focusNode: _focusNode,
                       controller: _controller,
                       title:
                           '''Количество (${widget.animalPart.nomenclature.countingStrategy.name})''',

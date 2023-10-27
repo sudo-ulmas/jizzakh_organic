@@ -10,6 +10,7 @@ class InputField extends StatefulWidget {
     this.countingStrategy,
     this.onChanged,
     this.isPassoword = false,
+    this.focusNode,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class InputField extends StatefulWidget {
   final CountingStrategy? countingStrategy;
   final void Function(String text)? onChanged;
   final bool isPassoword;
+  final FocusNode? focusNode;
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -41,6 +43,7 @@ class _InputFieldState extends State<InputField> {
         ),
         const SizedBox(height: 6),
         TextFormField(
+          focusNode: widget.focusNode,
           controller: widget.controller,
           onChanged: widget.onChanged,
           obscureText: obscureText && widget.isPassoword,
