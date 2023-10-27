@@ -9,7 +9,6 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<List<ShipmentModel>> getShipments() {
-    // TODO: implement getShipments
-    throw UnimplementedError();
+    return Future(() => []);
   }
 }
