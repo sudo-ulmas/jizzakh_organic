@@ -1,4 +1,4 @@
-import 'package:uboyniy_cex/model/animal_model.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
 
@@ -8,8 +8,30 @@ class AnimalRepositoryImpl implements AnimalRepository {
   final DioClient _dioClient;
 
   @override
-  Future<void> createDocument() {
-    throw UnimplementedError();
+  Future<void> createDocument(
+    (AnimalModel, List<AnimalPartModel>) nomenclature,
+  ) async {
+    try {
+      final response = await _dioClient.dio.post<Map<String, dynamic>>(
+        ApiUrl.createDocument,
+        data: {
+          'nomenclature': {
+            'id_nomenclature': nomenclature.$1.id,
+            'weight': nomenclature.$1.weight,
+            'products': nomenclature.$2
+                .map((e) => {'id': e.nomenclature.id, 'count': e.count})
+                .toList(),
+          },
+        },
+      );
+      if (response.statusCode == 200) {
+        return;
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
+      //TODO: make this beatifull
+      rethrow;
+    }
   }
 
   @override

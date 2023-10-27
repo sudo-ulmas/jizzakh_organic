@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 
 part 'create_document_event.dart';
@@ -12,17 +13,18 @@ class CreateDocumentBloc
     required AnimalRepository animalRepository,
   })  : _repository = animalRepository,
         super(const CreateDocumentState.initial()) {
-    on<_CreateDocumentButtonPressed>((e, emit) => _createDocument(emit));
+    on<_CreateDocumentButtonPressed>(_createDocument);
   }
 
   final AnimalRepository _repository;
 
   Future<void> _createDocument(
+    _CreateDocumentButtonPressed event,
     Emitter<CreateDocumentState> emit,
   ) async {
     try {
       emit(const CreateDocumentState.inProgress());
-      await _repository.createDocument();
+      await _repository.createDocument((event.animal, event.animalParts));
       emit(const CreateDocumentState.success());
     } catch (e) {
       emit(const CreateDocumentState.error());

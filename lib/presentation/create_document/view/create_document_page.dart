@@ -82,9 +82,12 @@ class CreateDocumentPage extends StatelessWidget {
                     }
                   },
                   builder: (context, state) => FilledButton(
-                    onPressed: () => context
-                        .read<CreateDocumentBloc>()
-                        .add(const CreateDocumentEvent.create()),
+                    onPressed: () => context.read<CreateDocumentBloc>().add(
+                          CreateDocumentEvent.create(
+                            animal: animal,
+                            animalParts: animalParts,
+                          ),
+                        ),
                     child: state is CreateDocumentInProgress
                         ? const CircularProgressIndicator(
                             strokeWidth: 3,

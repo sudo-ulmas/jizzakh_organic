@@ -1,4 +1,4 @@
-import 'package:uboyniy_cex/model/animal_model.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 
 class AnimalRepositoryDecorator implements AnimalRepository {
@@ -12,8 +12,10 @@ class AnimalRepositoryDecorator implements AnimalRepository {
   final FakeAnimalRepository _fakeAnimalRepository;
 
   @override
-  Future<void> createDocument() {
-    return _fakeAnimalRepository.createDocument();
+  Future<void> createDocument(
+    (AnimalModel, List<AnimalPartModel>) nomenclature,
+  ) {
+    return _animalRepositoryImpl.createDocument(nomenclature);
   }
 
   @override

@@ -33,7 +33,9 @@ class FakeAnimalRepository implements AnimalRepository {
   }
 
   @override
-  Future<void> createDocument() async {
+  Future<void> createDocument(
+    (AnimalModel, List<AnimalPartModel>) nomenclature,
+  ) async {
     await Future<void>.delayed(const Duration(seconds: 1));
   }
 }
