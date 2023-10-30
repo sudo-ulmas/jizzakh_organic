@@ -2,11 +2,18 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/util/util.dart';
+import 'package:uboyniy_cex/widget/widget.dart';
 
 class SharedAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const SharedAppbar({required this.title, this.actions = const [], super.key});
+  const SharedAppbar({
+    required this.title,
+    this.actions = const [],
+    this.includeLogoutButton = false,
+    super.key,
+  });
   final String title;
   final List<Widget> actions;
+  final bool includeLogoutButton;
 
   @override
   Widget build(BuildContext context) => AppBar(
@@ -29,6 +36,16 @@ class SharedAppbar extends StatelessWidget implements PreferredSizeWidget {
               );
             },
           ),
+          if (includeLogoutButton)
+            IconButton.filledTonal(
+              onPressed: () => showDialog<bool>(
+                context: context,
+                builder: (context) => const LogoutDialog(),
+              ),
+              icon: const Icon(
+                Icons.logout,
+              ),
+            ),
         ],
       );
 

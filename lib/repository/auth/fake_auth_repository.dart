@@ -35,4 +35,11 @@ class FakeAuthRepository implements AuthRepository {
       );
     });
   }
+
+  @override
+  Future<String?> getPassword({required String username}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+
+    return 'fake password';
+  }
 }

@@ -6,4 +6,6 @@ class LoginEvent with _$LoginEvent {
     required String username,
     required String password,
   }) = _LoginButtonPressed;
+
+  const factory LoginEvent.tryLogin() = _LoginTryRequested;
 }

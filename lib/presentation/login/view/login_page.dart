@@ -30,7 +30,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 60),
+                Builder(
+                  builder: (context) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                    );
+                  },
+                ),
                 Assets.img.logo.image(
                   scale: 1.5,
                   color: themeMode == ThemeMode.dark

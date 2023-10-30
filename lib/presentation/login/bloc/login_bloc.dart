@@ -12,9 +12,19 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
       : _repository = authRepository,
         super(const LoginState.initial(username: '')) {
     on<_LoginButtonPressed>(_login);
+    on<_LoginTryRequested>((event, emit) => _tryLogin(emit));
   }
 
   final AuthRepository _repository;
+
+  Future<void> _tryLogin(Emitter<LoginState> emit) async {
+    final password = await _repository.getPassword(username: state.username);
+    if (password != null) {
+      add(LoginEvent.login(username: state.username, password: password));
+    } else {
+      emit(LoginState.tryFail(username: state.username));
+    }
+  }
 
   Future<void> _login(
     _LoginButtonPressed event,
@@ -28,6 +38,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
       );
       emit(LoginState.success(username: event.username));
     } catch (e) {
+      emit(LoginState.tryFail(username: event.username));
       emit(LoginState.error(username: event.username));
     }
   }

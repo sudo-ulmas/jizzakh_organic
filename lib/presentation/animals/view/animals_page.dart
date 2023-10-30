@@ -13,7 +13,10 @@ class AnimalsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SharedAppbar(title: 'Животные в загоне'),
+      appBar: const SharedAppbar(
+        title: 'Животные в загоне',
+        includeLogoutButton: true,
+      ),
       body: BlocProvider(
         create: (context) =>
             AnimalsBloc(animalRepository: context.read<AnimalRepository>())

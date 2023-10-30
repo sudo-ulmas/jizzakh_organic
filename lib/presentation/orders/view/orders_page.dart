@@ -15,6 +15,7 @@ class OrdersPage extends StatelessWidget {
       child: Scaffold(
         appBar: SharedAppbar(
           title: 'Распоряжения',
+          includeLogoutButton: true,
           actions: [
             IconButton.filledTonal(
               tooltip: 'Нажмите чтобы узнать',

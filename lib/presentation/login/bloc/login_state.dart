@@ -10,4 +10,6 @@ class LoginState with _$LoginState {
   const factory LoginState.error({required String username}) = LoginError;
 
   const factory LoginState.success({required String username}) = LoginSuccess;
+
+  const factory LoginState.tryFail({required String username}) = LoginTryFail;
 }

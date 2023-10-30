@@ -6,4 +6,6 @@ abstract class AuthRepository {
     required String username,
     required String password,
   });
+
+  Future<String?> getPassword({required String username});
 }
