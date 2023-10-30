@@ -25,11 +25,12 @@ class _LoginPageState extends State<LoginPage> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 60),
                 Assets.img.logo.image(
                   scale: 1.5,
                   color: themeMode == ThemeMode.dark
@@ -65,10 +66,19 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 const SizedBox(height: 12),
-                InputField(
-                  title: 'Пароль',
-                  controller: _passwordController,
-                  isPassoword: true,
+                BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) => InputField(
+                    title: 'Пароль',
+                    controller: _passwordController,
+                    isPassoword: true,
+                    textInputAction: TextInputAction.done,
+                    onInputSubmitted: (p0) => context.read<LoginBloc>().add(
+                          LoginEvent.login(
+                            username: _usernameController.text,
+                            password: _passwordController.text,
+                          ),
+                        ),
+                  ),
                 ),
                 const SizedBox(height: 40),
                 SizedBox(

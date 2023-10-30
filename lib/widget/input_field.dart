@@ -11,6 +11,8 @@ class InputField extends StatefulWidget {
     this.onChanged,
     this.isPassoword = false,
     this.focusNode,
+    this.textInputAction,
+    this.onInputSubmitted,
     super.key,
   });
 
@@ -21,6 +23,8 @@ class InputField extends StatefulWidget {
   final void Function(String text)? onChanged;
   final bool isPassoword;
   final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final void Function(String?)? onInputSubmitted;
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -43,6 +47,8 @@ class _InputFieldState extends State<InputField> {
         ),
         const SizedBox(height: 6),
         TextFormField(
+          textInputAction: widget.textInputAction,
+          onFieldSubmitted: widget.onInputSubmitted,
           focusNode: widget.focusNode,
           controller: widget.controller,
           onChanged: widget.onChanged,
