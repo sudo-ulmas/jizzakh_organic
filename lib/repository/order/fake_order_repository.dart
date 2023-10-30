@@ -33,8 +33,8 @@ class FakeOrderRepository implements OrderRepository {
   ];
 
   static const _shipmentBarCodes = <String>[
-    '123123123',
-    '123123123',
+    '23E80397F0208',
+    '234020N200C4734',
     '123123123',
     '123123123',
   ];

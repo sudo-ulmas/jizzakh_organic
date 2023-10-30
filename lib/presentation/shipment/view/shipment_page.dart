@@ -21,16 +21,17 @@ class _ShipmentPageState extends State<ShipmentPage> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      _eventChannel.receiveBroadcastStream().listen(print);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShipmentBloc(orderRepository: context.read())
-        ..add(const ShipmentEvent.loadShipment()),
+      create: (context) => ShipmentBloc(
+        orderRepository: context.read(),
+        scannerStream: Platform.isAndroid
+            ? _eventChannel.receiveBroadcastStream()
+            : const Stream.empty(),
+      )..add(const ShipmentEvent.loadShipment()),
       child: Scaffold(
         appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
         body: CustomScrollView(
@@ -39,7 +40,17 @@ class _ShipmentPageState extends State<ShipmentPage> {
               pinned: true,
               delegate: HeaderDelegate(),
             ),
-            BlocBuilder<ShipmentBloc, ShipmentState>(
+            BlocConsumer<ShipmentBloc, ShipmentState>(
+              listener: (context, state) {
+                if (state is ShipmentBarcodeNotFound) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${state.barcode} нет в списке товаров'),
+                    ),
+                  );
+                }
+              },
               builder: (context, state) => switch (state) {
                 ShipmentSuccess(:final shipments) => SliverList.builder(
                     itemCount: shipments.length,

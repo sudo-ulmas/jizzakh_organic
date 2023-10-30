@@ -60,9 +60,12 @@ class ShipmentTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    shipment.count,
-                    style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
+                  Flexible(
+                    child: AutoSizeText(
+                      shipment.count,
+                      style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
+                      maxLines: 1,
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 10),

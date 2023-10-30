@@ -10,4 +10,7 @@ class ShipmentState with _$ShipmentState {
 
   const factory ShipmentState.success(List<ShipmentModel> shipments) =
       ShipmentSuccess;
+
+  const factory ShipmentState.barcodeNotFound(String barcode) =
+      ShipmentBarcodeNotFound;
 }

@@ -10,12 +10,43 @@ part 'shipment_bloc.freezed.dart';
 class ShipmentBloc extends Bloc<ShipmentEvent, ShipmentState> {
   ShipmentBloc({
     required OrderRepository orderRepository,
+    required Stream<dynamic> scannerStream,
   })  : _repository = orderRepository,
+        _barcodeScanner = scannerStream,
         super(const ShipmentState.initial()) {
     on<_ShipmentLoadRequested>((e, emit) => _getShipments(emit));
+    on<_ShipmentScanned>(_findShipment);
+    _barcodeScanner.listen((barcodeText) {
+      if (barcodeText != null) {
+        add(ShipmentEvent.findShipment(barcodeText as String));
+      }
+    });
   }
 
   final OrderRepository _repository;
+  final Stream<dynamic> _barcodeScanner;
+
+  void _findShipment(
+    _ShipmentScanned event,
+    Emitter<ShipmentState> emit,
+  ) {
+    if (state is ShipmentSuccess) {
+      var barcodeNotFound = true;
+      var shipments =
+          List<ShipmentModel>.from((state as ShipmentSuccess).shipments);
+      shipments = shipments.map((e) {
+        if (e.barcode == event.barcodeText) {
+          barcodeNotFound = false;
+          return e.copyWith(scanned: true);
+        }
+        return e;
+      }).toList();
+      if (barcodeNotFound) {
+        emit(ShipmentState.barcodeNotFound(event.barcodeText));
+      }
+      emit(ShipmentState.success(shipments));
+    }
+  }
 
   Future<void> _getShipments(
     Emitter<ShipmentState> emit,
