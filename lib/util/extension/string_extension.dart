@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 extension StringExtension on String {
   bool get validateWeightKg =>
       isNotEmpty &&

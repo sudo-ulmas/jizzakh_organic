@@ -36,36 +36,61 @@ class _ShipmentPageState extends State<ShipmentPage> {
       ),
       child: Scaffold(
         appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
-        body: CustomScrollView(
-          slivers: [
-            const SliverPersistentHeader(
-              pinned: true,
-              delegate: HeaderDelegate(),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            CustomScrollView(
+              slivers: [
+                const SliverPersistentHeader(
+                  pinned: true,
+                  delegate: HeaderDelegate(),
+                ),
+                BlocConsumer<ShipmentBloc, ShipmentState>(
+                  listener: (context, state) {
+                    if (state is ShipmentBarcodeNotFound) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('${state.barcode} нет в списке товаров'),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) => switch (state) {
+                    ShipmentInitial(:final shipments) => SliverList.builder(
+                        itemCount: shipments.length,
+                        itemBuilder: (context, index) => ShipmentTile(
+                          shipment: shipments[index],
+                        ),
+                      ),
+                    _ => const SliverFillRemaining(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                  },
+                ),
+              ],
             ),
-            BlocConsumer<ShipmentBloc, ShipmentState>(
-              listener: (context, state) {
-                if (state is ShipmentBarcodeNotFound) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${state.barcode} нет в списке товаров'),
+            Positioned(
+              bottom: 10,
+              child: BlocBuilder<ShipmentBloc, ShipmentState>(
+                builder: (context, state) {
+                  return AnimatedOpacity(
+                    opacity: state is ShipmentInitial &&
+                            state.shipments.every((element) => element.scanned)
+                        ? 1
+                        : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: FilledButton.tonalIcon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.upload_sharp),
+                      label: const Text('Отгрузить'),
                     ),
                   );
-                }
-              },
-              builder: (context, state) => switch (state) {
-                ShipmentInitial(:final shipments) => SliverList.builder(
-                    itemCount: shipments.length,
-                    itemBuilder: (context, index) => ShipmentTile(
-                      shipment: shipments[index],
-                    ),
-                  ),
-                _ => const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-              },
+                },
+              ),
             ),
           ],
         ),
