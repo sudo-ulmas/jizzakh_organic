@@ -35,6 +35,9 @@ class AnimalsPage extends StatelessWidget {
                     endIndent: 32,
                   ),
                 ),
+              AnimalsError(:final exception) => Center(
+                  child: Text(exception.message()),
+                ),
               _ => const Center(
                   child: CircularProgressIndicator(),
                 ),

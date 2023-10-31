@@ -6,12 +6,13 @@ class BaseApiHanlder {
     try {
       return await request();
     } on DioException catch (e) {
-      print(e.toString());
       switch (e.type) {
         case DioExceptionType.badResponse:
           switch (e.response?.statusCode ?? 0) {
             case 401 || 403:
               throw WrongCredentialsException();
+            case 500:
+              throw ServerException();
             case _:
               throw UnkonwnException(statusCode: e.response?.statusCode);
           }

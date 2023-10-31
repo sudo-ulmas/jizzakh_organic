@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
+import 'package:uboyniy_cex/util/util.dart';
 
 part 'animals_event.dart';
 part 'animals_state.dart';
@@ -24,8 +25,8 @@ class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
       emit(const AnimalsState.inProgress());
       final animals = await _repository.getAnimals();
       emit(AnimalsState.success(animals));
-    } catch (e) {
-      emit(const AnimalsState.error());
+    } on AppException catch (e) {
+      emit(AnimalsState.error(e));
     }
   }
 }

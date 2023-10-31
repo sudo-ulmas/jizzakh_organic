@@ -10,47 +10,29 @@ class AnimalRepositoryImpl implements AnimalRepository {
   @override
   Future<void> createDocument(
     (AnimalModel, List<AnimalPartModel>) nomenclature,
-  ) async {
-    try {
-      final response = await _dioClient.dio.post<Map<String, dynamic>>(
-        ApiUrl.createDocument,
-        data: {
-          'nomenclature': {
-            'id_nomenclature': nomenclature.$1.id,
-            'weight': nomenclature.$1.weight,
-            'products': nomenclature.$2
-                .map((e) => {'id': e.nomenclature.id, 'count': e.count})
-                .toList(),
+  ) =>
+      BaseApiHanlder.request(() async {
+        await _dioClient.dio.post<Map<String, dynamic>>(
+          ApiUrl.createDocument,
+          data: {
+            'nomenclature': {
+              'id_nomenclature': nomenclature.$1.id,
+              'weight': nomenclature.$1.weight,
+              'products': nomenclature.$2
+                  .map((e) => {'id': e.nomenclature.id, 'count': e.count})
+                  .toList(),
+            },
           },
-        },
-      );
-      if (response.statusCode == 200) {
-        return;
-      }
-      throw Exception(response.statusCode);
-    } catch (e) {
-      //TODO: make this beatifull
-      rethrow;
-    }
-  }
+        );
+      });
 
   @override
-  Future<List<AnimalModel>> getAnimals() async {
-    try {
-      final response =
-          await _dioClient.dio.post<Map<String, dynamic>>(ApiUrl.nomenclatures);
-
-      if (response.statusCode == 200) {
+  Future<List<AnimalModel>> getAnimals() => BaseApiHanlder.request(() async {
+        final response = await _dioClient.dio
+            .post<Map<String, dynamic>>(ApiUrl.nomenclatures);
         final animals = (response.data!['nomenclatures'] as List)
             .map((e) => AnimalModel.fromJson(e as Map<String, dynamic>))
             .toList();
-
         return animals;
-      }
-      throw Exception(response.statusCode);
-    } catch (e) {
-      //TODO: make this beatifull
-      rethrow;
-    }
-  }
+      });
 }

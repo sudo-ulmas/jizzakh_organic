@@ -12,17 +12,17 @@ class DioClient {
       baseUrl: _baseUrl,
       followRedirects: false,
       validateStatus: (status) {
-        return false;
+        return status == 200 || status == 201;
       },
       receiveTimeout: const Duration(seconds: 20),
       connectTimeout: const Duration(seconds: 20),
     ),
   )..interceptors.addAll([
-      // if (!kReleaseMode)
-      //   PrettyDioLogger(
-      //     requestHeader: true,
-      //     requestBody: true,
-      //   ),
+      if (!kReleaseMode)
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+        ),
     ]);
 }
 
