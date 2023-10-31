@@ -16,6 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   final DioClient _dioClient;
+
   @override
   Future<void> login({
     required String username,
@@ -25,18 +26,17 @@ class AuthRepositoryImpl implements AuthRepository {
       _dioClient.dio.interceptors.add(
         AuthInterceptor(username: username, password: password),
       );
-      final response =
-          await _dioClient.dio.post<Map<String, dynamic>>(ApiUrl.products);
-      if (response.statusCode == 200) {
+      return BaseApiHanlder.request(() async {
+        final response =
+            await _dioClient.dio.post<Map<String, dynamic>>(ApiUrl.products);
         final nomenclatures = (response.data!['nomenclatures'] as List)
             .map((e) => NomenclatureModel.fromJson(e as Map<String, dynamic>))
             .toList();
         await _savePassword(username: username, password: password);
         _controller.add(nomenclatures);
-      }
-    } catch (e) {
+      });
+    } on AppException {
       _dioClient.dio.interceptors.removeLast();
-      //TODO: implement proper error handling
       rethrow;
     }
   }

@@ -79,6 +79,14 @@ class CreateDocumentPage extends StatelessWidget {
                   listener: (context, state) {
                     if (state is CreateDocumentSuccess) {
                       context.go(PagePath.orders);
+                    } else if (state is CreateDocumentError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.exception.message(),
+                          ),
+                        ),
+                      );
                     }
                   },
                   builder: (context, state) => FilledButton(

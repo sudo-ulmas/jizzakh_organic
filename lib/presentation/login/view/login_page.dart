@@ -95,8 +95,8 @@ class _LoginPageState extends State<LoginPage> {
                         context.go(PagePath.animals);
                       } else if (state is LoginError) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Error occured'),
+                          SnackBar(
+                            content: Text(state.exception.message()),
                           ),
                         );
                       }

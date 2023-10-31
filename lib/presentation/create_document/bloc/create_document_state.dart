@@ -8,5 +8,6 @@ class CreateDocumentState with _$CreateDocumentState {
 
   const factory CreateDocumentState.success() = CreateDocumentSuccess;
 
-  const factory CreateDocumentState.error() = CreateDocumentError;
+  const factory CreateDocumentState.error(AppException exception) =
+      CreateDocumentError;
 }
