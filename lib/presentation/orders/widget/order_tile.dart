@@ -10,15 +10,18 @@ class OrderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => context.go('${PagePath.orders}/${PagePath.shipment}'),
-      title: Text(order.receverName),
+      onTap: () => context.go(
+        '${PagePath.orders}/${PagePath.shipment}',
+        extra: order.shipments,
+      ),
+      title: Text(order.receiverName),
       trailing: Text(
-        order.date,
+        order.date.split(' ').first,
         style: context.theme.textTheme.labelLarge?.copyWith(
           color: context.theme.colorScheme.onSurface,
         ),
       ),
-      subtitle: Text(order.id.toString()),
+      subtitle: Text(order.number),
       leading: Icon(
         Icons.edit_document,
         color: order.type.color,

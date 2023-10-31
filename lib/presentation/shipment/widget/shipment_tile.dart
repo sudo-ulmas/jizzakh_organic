@@ -24,7 +24,7 @@ class ShipmentTile extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    shipment.productSeries,
+                    shipment.idSeries,
                     style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
                   ),
                   Container(
@@ -62,7 +62,7 @@ class ShipmentTile extends StatelessWidget {
                 children: [
                   Flexible(
                     child: AutoSizeText(
-                      shipment.count,
+                      '${shipment.quantity} ${shipment.measureType}',
                       style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
                       maxLines: 1,
                     ),

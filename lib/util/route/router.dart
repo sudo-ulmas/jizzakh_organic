@@ -102,7 +102,9 @@ class AppRouter {
               path: PagePath.shipment,
               pageBuilder: (context, state) => CustomTransitionPage<void>(
                 key: state.pageKey,
-                child: const ShipmentPage(),
+                child: ShipmentPage(
+                  shipments: state.extra! as List<ShipmentModel>,
+                ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) =>
                         FadeTransition(opacity: animation, child: child),

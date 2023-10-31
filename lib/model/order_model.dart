@@ -1,18 +1,19 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uboyniy_cex/model/model.dart';
 
-part 'order_model.freezed.dart';
-part 'order_model.g.dart';
+abstract class OrderModel {
+  OrderModel({
+    required this.id,
+    required this.receiverName,
+    required this.number,
+    required this.date,
+    required this.shipments,
+    required this.type,
+  });
 
-@freezed
-class OrderModel with _$OrderModel {
-  factory OrderModel({
-    required int id,
-    required String receverName,
-    required String date,
-    required OrderType type,
-  }) = _OrderModel;
-
-  factory OrderModel.fromJson(Map<String, dynamic> json) =>
-      _$OrderModelFromJson(json);
+  final String id;
+  final String receiverName;
+  final String date;
+  final String number;
+  final List<ShipmentModel> shipments;
+  final OrderType type;
 }

@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/presentation/shipment/bloc/shipment_bloc.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 class ShipmentPage extends StatefulWidget {
-  const ShipmentPage({super.key});
+  const ShipmentPage({required this.shipments, super.key});
+  final List<ShipmentModel> shipments;
   static const platform = MethodChannel('com.example.uboyniy_cex/scanner');
 
   @override
@@ -27,11 +29,11 @@ class _ShipmentPageState extends State<ShipmentPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ShipmentBloc(
-        orderRepository: context.read(),
         scannerStream: Platform.isAndroid
             ? _eventChannel.receiveBroadcastStream()
             : const Stream.empty(),
-      )..add(const ShipmentEvent.loadShipment()),
+        shipments: widget.shipments,
+      ),
       child: Scaffold(
         appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
         body: CustomScrollView(
@@ -52,7 +54,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
                 }
               },
               builder: (context, state) => switch (state) {
-                ShipmentSuccess(:final shipments) => SliverList.builder(
+                ShipmentInitial(:final shipments) => SliverList.builder(
                     itemCount: shipments.length,
                     itemBuilder: (context, index) => ShipmentTile(
                       shipment: shipments[index],

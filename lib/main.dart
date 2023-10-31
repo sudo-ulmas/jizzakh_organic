@@ -74,7 +74,7 @@ class _AppProviderState extends State<AppProvider> {
             ),
           ),
           Provider<OrderRepository>(
-            create: (context) => FakeOrderRepository(),
+            create: (context) => OrderRepositoryImpl(dioClient: context.read()),
           ),
           BlocProvider(
             create: (context) =>
