@@ -33,7 +33,6 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   ) async {
     try {
       emit(LoginState.inProgress(username: event.username));
-      print('password: ${event.password}');
       await _repository.login(
         username: event.username,
         password: event.password,
