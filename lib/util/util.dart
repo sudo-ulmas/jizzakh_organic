@@ -1,3 +1,4 @@
+export 'exceptions/exceptions.dart';
 export 'extension/string_extension.dart';
 export 'gen/gen.dart';
 export 'network/network.dart';

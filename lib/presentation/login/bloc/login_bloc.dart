@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
+import 'package:uboyniy_cex/util/util.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -32,14 +33,15 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   ) async {
     try {
       emit(LoginState.inProgress(username: event.username));
+      print('password: ${event.password}');
       await _repository.login(
         username: event.username,
         password: event.password,
       );
       emit(LoginState.success(username: event.username));
-    } catch (e) {
+    } on AppException catch (e) {
       emit(LoginState.tryFail(username: event.username));
-      emit(LoginState.error(username: event.username));
+      emit(LoginState.error(username: event.username, exception: e));
     }
   }
 

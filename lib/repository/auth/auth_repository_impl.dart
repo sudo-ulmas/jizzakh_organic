@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:uboyniy_cex/model/nomenclature_model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
@@ -25,18 +26,21 @@ class AuthRepositoryImpl implements AuthRepository {
       _dioClient.dio.interceptors.add(
         AuthInterceptor(username: username, password: password),
       );
-      final response =
-          await _dioClient.dio.post<Map<String, dynamic>>(ApiUrl.products);
-      if (response.statusCode == 200) {
-        final nomenclatures = (response.data!['nomenclatures'] as List)
-            .map((e) => NomenclatureModel.fromJson(e as Map<String, dynamic>))
-            .toList();
-        await _savePassword(username: username, password: password);
-        _controller.add(nomenclatures);
-      }
-    } catch (e) {
+      return BaseApiHanlder.request(() async {
+        final response = await _dioClient.dio.post<dynamic>(ApiUrl.products);
+
+        if (response.statusCode == 200) {
+          final nomenclatures = ((response.data!
+                  as Map<String, dynamic>)['nomenclatures'] as List)
+              .map((e) => NomenclatureModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+          await _savePassword(username: username, password: password);
+          _controller.add(nomenclatures);
+        }
+        print(response.statusCode);
+      });
+    } on AppException catch (e) {
       _dioClient.dio.interceptors.removeLast();
-      //TODO: implement proper error handling
       rethrow;
     }
   }
