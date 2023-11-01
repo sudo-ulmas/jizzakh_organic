@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboyniy_cex/presentation/orders/bloc/orders_bloc.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
+import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 class OrdersPage extends StatelessWidget {
@@ -40,6 +41,13 @@ class OrdersPage extends StatelessWidget {
                     const Divider(
                   indent: 32,
                   endIndent: 32,
+                ),
+              ),
+            OrdersError(:final exception) => Center(
+                child: Text(
+                  exception.message(),
+                  style: context.theme.textTheme.bodyLarge
+                      ?.copyWith(color: context.theme.colorScheme.onSurface),
                 ),
               ),
             _ => const Center(

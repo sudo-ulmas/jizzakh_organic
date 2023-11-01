@@ -16,13 +16,14 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
       color: context.theme.colorScheme.primaryContainer,
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             'Партия',
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              color: context.theme.colorScheme.onSurface,
             ),
           ),
           Flexible(
@@ -31,6 +32,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
               'Номенклатура',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color: context.theme.colorScheme.onSurface,
               ),
               maxLines: 2,
             ),
@@ -43,9 +45,10 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
                   'Кол-во',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.check_box,
                   size: 12,
                 ),

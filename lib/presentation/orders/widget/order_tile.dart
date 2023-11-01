@@ -12,9 +12,9 @@ class OrderTile extends StatelessWidget {
     return ListTile(
       onTap: () => context.go(
         '${PagePath.orders}/${PagePath.shipment}',
-        extra: order.shipments,
+        extra: order,
       ),
-      title: Text(order.receiverName),
+      title: Text(order.receiverName ?? ''),
       trailing: Text(
         order.date.split(' ').first,
         style: context.theme.textTheme.labelLarge?.copyWith(

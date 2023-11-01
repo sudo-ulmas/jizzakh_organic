@@ -11,7 +11,7 @@ abstract class OrderModel {
   });
 
   final String id;
-  final String receiverName;
+  final String? receiverName;
   final String date;
   final String number;
   final List<ShipmentModel> shipments;

@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/presentation/shipment/bloc/shipment_bloc.dart';
+import 'package:uboyniy_cex/repository/repository.dart';
+import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
 class ShipmentPage extends StatefulWidget {
-  const ShipmentPage({required this.shipments, super.key});
-  final List<ShipmentModel> shipments;
+  const ShipmentPage({required this.order, super.key});
+  final OrderModel order;
   static const platform = MethodChannel('com.example.uboyniy_cex/scanner');
 
   @override
@@ -32,7 +35,8 @@ class _ShipmentPageState extends State<ShipmentPage> {
         scannerStream: Platform.isAndroid
             ? _eventChannel.receiveBroadcastStream()
             : const Stream.empty(),
-        shipments: widget.shipments,
+        shipments: widget.order.shipments,
+        orderRepository: context.read(),
       ),
       child: Scaffold(
         appBar: const SharedAppbar(title: 'Список товаров к отгрузке'),
@@ -55,6 +59,14 @@ class _ShipmentPageState extends State<ShipmentPage> {
                               Text('${state.barcode} нет в списке товаров'),
                         ),
                       );
+                    } else if (state is ShipmentError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.exception.message()),
+                        ),
+                      );
+                    } else if (state is ShipmentSuccess) {
+                      context.pop();
                     }
                   },
                   builder: (context, state) => switch (state) {
@@ -75,6 +87,8 @@ class _ShipmentPageState extends State<ShipmentPage> {
             ),
             Positioned(
               bottom: 10,
+              left: 24,
+              right: 24,
               child: BlocBuilder<ShipmentBloc, ShipmentState>(
                 builder: (context, state) {
                   return AnimatedOpacity(
@@ -83,10 +97,20 @@ class _ShipmentPageState extends State<ShipmentPage> {
                         ? 1
                         : 0,
                     duration: const Duration(milliseconds: 200),
-                    child: FilledButton.tonalIcon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.upload_sharp),
-                      label: const Text('Отгрузить'),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.tonalIcon(
+                        onPressed: () => context
+                            .read<ShipmentBloc>()
+                            .add(ShipmentEvent.shipOrder(order: widget.order)),
+                        icon: const Icon(Icons.upload_sharp),
+                        label: Text(
+                          'Отгрузить',
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                            color: context.theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 },

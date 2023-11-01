@@ -9,6 +9,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = context.read<ThemeCubit>().state;
     return BlocProvider(
       create: (context) => LoginBloc(authRepository: context.read())
         ..add(const LoginEvent.tryLogin()),
@@ -26,7 +27,11 @@ class SplashPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Assets.img.logo.image(),
+                Assets.img.logo.image(
+                  color: themeMode == ThemeMode.dark
+                      ? context.theme.colorScheme.primary
+                      : null,
+                ),
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
+import 'package:uboyniy_cex/util/util.dart';
 
 part 'orders_event.dart';
 part 'orders_state.dart';
@@ -24,8 +25,8 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       emit(const OrdersState.inProgress());
       final orders = await _repository.getOrders();
       emit(OrdersState.success(orders));
-    } catch (e) {
-      emit(const OrdersState.error());
+    } on AppException catch (e) {
+      emit(OrdersState.error(e));
     }
   }
 }

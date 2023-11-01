@@ -82,4 +82,9 @@ class FakeOrderRepository implements OrderRepository {
 
     return shipments;
   }
+
+  @override
+  Future<void> shipOrder(OrderModel order) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+  }
 }

@@ -51,6 +51,24 @@ class InfoDialog extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.edit_document,
+                  color: Colors.yellow,
+                ),
+                Flexible(
+                  child: Text(
+                    ' Движение продукции и материалов',
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         actions: [

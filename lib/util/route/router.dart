@@ -103,7 +103,7 @@ class AppRouter {
               pageBuilder: (context, state) => CustomTransitionPage<void>(
                 key: state.pageKey,
                 child: ShipmentPage(
-                  shipments: state.extra! as List<ShipmentModel>,
+                  order: state.extra! as OrderModel,
                 ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) =>

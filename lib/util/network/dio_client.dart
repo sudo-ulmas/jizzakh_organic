@@ -31,4 +31,8 @@ abstract class ApiUrl {
   static const String products = '/Products/';
   static const String createDocument = '/ProductionWithoutOrder/';
   static const String orders = '/OrderForMoving/';
+  static const String movementOrders = '/TOPFP/';
+  static const String shipTransformOrder = '/Order/';
+  static const String shipSaleOrder = '/SalesOfGoodsAndServices/';
+  static const String shipMovementOrder = '/TOPFPS/';
 }

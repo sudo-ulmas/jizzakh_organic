@@ -23,9 +23,12 @@ class ShipmentTile extends StatelessWidget {
             Flexible(
               child: Row(
                 children: [
-                  Text(
-                    shipment.idSeries,
-                    style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
+                  Flexible(
+                    child: AutoSizeText(
+                      shipment.series,
+                      style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
+                      maxLines: 2,
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
