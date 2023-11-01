@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/presentation/shipment/bloc/shipment_bloc.dart';
-import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
