@@ -44,11 +44,13 @@ class ShipmentTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AutoSizeText(
-                    shipment.title,
-                    textAlign: TextAlign.center,
-                    style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
-                    maxLines: 2,
+                  Flexible(
+                    child: AutoSizeText(
+                      shipment.title,
+                      textAlign: TextAlign.center,
+                      style: bodyMediumStyle?.copyWith(color: onSurfaceColor),
+                      maxLines: 2,
+                    ),
                   ),
                 ],
               ),

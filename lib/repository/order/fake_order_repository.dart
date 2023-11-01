@@ -22,19 +22,17 @@ class FakeOrderRepository implements OrderRepository {
     '08 Коровы',
     '05 Бычки 12-18 мес откорм',
     '09 Ягненки 1 мес',
-    '02 Лошади',
+    '02 Лошади 12-18 мес откорм',
   ];
 
   static const _shipmentBarCodes = <String>[
     '23E80397F0208',
     '234020N200C4734',
-    '123123123',
-    '123123123',
   ];
 
   @override
   Future<List<OrderModel>> getOrders() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     final rng = Random();
     final orders = <OrderModel>[];
     for (var i = 0; i < 100; i += 1) {
@@ -66,12 +64,13 @@ class FakeOrderRepository implements OrderRepository {
   List<ShipmentModel> getShipments() {
     final rng = Random();
     final shipments = <ShipmentModel>[];
-    for (var i = 0; i < 12; i += 1) {
+    final length = _shipmentBarCodes.length;
+    for (var i = 0; i < length; i += 1) {
       shipments.add(
         ShipmentModel(
           id: '${i + 1}',
-          title: _shipmentTitles[rng.nextInt(4)],
-          barcode: _shipmentBarCodes[rng.nextInt(4)],
+          title: _shipmentTitles[rng.nextInt(_shipmentTitles.length)],
+          barcode: _shipmentBarCodes[rng.nextInt(length)],
           quantity: rng.nextInt(10000).toString(),
           measureType: 'кг',
           idSeries: rng.nextInt(10000).toString(),

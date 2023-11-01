@@ -12,8 +12,8 @@ class MovementOrderModel with _$MovementOrderModel implements OrderModel {
     @JsonKey(name: 'idTOPFP') required String id,
     @JsonKey(name: 'Number') required String number,
     required String date,
-    @Default('') String? receiverName,
     @JsonKey(name: 'nomenclatures') required List<ShipmentModel> shipments,
+    @Default('') String? receiverName,
     @Default(OrderType.movement) OrderType type,
   }) = _MovementOrderModel;
 
