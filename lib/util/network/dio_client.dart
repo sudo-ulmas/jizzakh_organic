@@ -14,8 +14,8 @@ class DioClient {
       validateStatus: (status) {
         return status == 200 || status == 201;
       },
-      receiveTimeout: const Duration(seconds: 5),
-      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 20),
     ),
   )..interceptors.addAll([
       if (!kReleaseMode)
