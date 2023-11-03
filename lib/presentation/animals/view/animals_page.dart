@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uboyniy_cex/bloc/queue_bloc.dart';
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/presentation/animals/bloc/animals_bloc.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
@@ -24,15 +25,22 @@ class AnimalsPage extends StatelessWidget {
         child: BlocBuilder<AnimalsBloc, AnimalsState>(
           builder: (context, state) {
             return switch (state) {
-              AnimalsSuccess(:final animals) => ListView.separated(
-                  itemCount: animals.length,
-                  itemBuilder: (context, index) => AnimalTile(
-                    animal: animals[index],
-                    index: index,
-                  ),
-                  separatorBuilder: (context, index) => const Divider(
-                    indent: 32,
-                    endIndent: 32,
+              AnimalsSuccess(:final animals) =>
+                BlocBuilder<QueueBloc, QueueState>(
+                  builder: (context, state) => ListView.separated(
+                    itemCount: animals.length,
+                    itemBuilder: (context, index) => AnimalTile(
+                      animal: animals[index],
+                      index: index,
+                      uploading: state.documents
+                          .where((element) =>
+                              element.idNomenclature == animals[index].id)
+                          .isNotEmpty,
+                    ),
+                    separatorBuilder: (context, index) => const Divider(
+                      indent: 32,
+                      endIndent: 32,
+                    ),
                   ),
                 ),
               AnimalsError(:final exception) => Center(
@@ -54,20 +62,37 @@ class AnimalsPage extends StatelessWidget {
 }
 
 class AnimalTile extends StatelessWidget {
-  const AnimalTile({required this.animal, required this.index, super.key});
+  const AnimalTile({
+    required this.animal,
+    required this.index,
+    required this.uploading,
+    super.key,
+  });
   final AnimalModel animal;
   final int index;
+  final bool uploading;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => context.go(
-        '${PagePath.animals}/${PagePath.animalDetails}',
-        extra: animal,
-      ),
+      onTap: uploading
+          ? null
+          : () => context.go(
+                '${PagePath.animals}/${PagePath.animalDetails}',
+                extra: animal,
+              ),
       leading: Text('\u2116 ${index + 1}'),
       subtitle: Text('Бирка: ${animal.tag}'),
       title: Text(animal.title),
+      trailing: uploading
+          ? const Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Icon(Icons.upload),
+              ],
+            )
+          : null,
     );
   }
 }

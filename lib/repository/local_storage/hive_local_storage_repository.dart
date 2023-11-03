@@ -37,6 +37,12 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
   }
 
   @override
+  Future<List<PostDocumentModel>> getAllDocumentsFromQueue() async {
+    final box = await Hive.openBox<PostDocumentModel>(_documentQueueBox);
+    return box.values.toList();
+  }
+
+  @override
   Future<void> addOrderToQueue(PostOrderModel order) async {
     final box = await Hive.openBox<PostOrderModel>(_orderQueueBox);
     await box.add(order);
@@ -52,5 +58,11 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
   Future<PostOrderModel?> getOrdersHeadFromQueue() async {
     final box = await Hive.openBox<PostOrderModel>(_orderQueueBox);
     return box.values.firstOrNull;
+  }
+
+  @override
+  Future<List<PostOrderModel>> getAllOrdersFromQueue() async {
+    final box = await Hive.openBox<PostOrderModel>(_orderQueueBox);
+    return box.values.toList();
   }
 }

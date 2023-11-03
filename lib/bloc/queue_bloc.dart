@@ -38,6 +38,9 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
   Future<void> _startQueue(
     Emitter<QueueState> emit,
   ) async {
+    final documents = await _localStorageRepository.getAllDocumentsFromQueue();
+    final orders = await _localStorageRepository.getAllOrdersFromQueue();
+    emit(state.copyWith(documents: documents, orders: orders));
     await _startUpload(emit);
   }
 
@@ -46,6 +49,9 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
     Emitter<QueueState> emit,
   ) async {
     await _localStorageRepository.addOrderToQueue(event.order);
+
+    final orders = List<PostOrderModel>.from(state.orders);
+    emit(state.copyWith(orders: orders..add(event.order)));
     await _startUpload(emit);
   }
 
@@ -54,6 +60,8 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
     Emitter<QueueState> emit,
   ) async {
     await _localStorageRepository.addDocumentToQueue(event.document);
+    final documents = List<PostDocumentModel>.from(state.documents);
+    emit(state.copyWith(documents: documents..add(event.document)));
     await _startUpload(emit);
   }
 
@@ -61,7 +69,9 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
     if (state is QueueUploadInProgress) {
       return;
     }
-    emit(const QueueUploadInProgress());
+    emit(
+      QueueUploadInProgress(documents: state.documents, orders: state.orders),
+    );
 
     while (state is QueueUploadInProgress) {
       final document =
@@ -78,6 +88,8 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
             requestFromQueue: true,
           );
           await _localStorageRepository.deleteDocumentHeadFromQueue();
+          final documents = List<PostDocumentModel>.from(state.documents);
+          emit(state.copyWith(documents: documents));
         } catch (e) {
           await Future<void>.delayed(const Duration(seconds: 10));
         }
@@ -90,6 +102,8 @@ class QueueBloc extends Bloc<QueueEvent, QueueState> {
             requestFromQueue: true,
           );
           await _localStorageRepository.deleteOrderHeadFromQueue();
+          final orders = List<PostOrderModel>.from(state.orders);
+          emit(state.copyWith(orders: orders));
         } catch (e) {
           await Future<void>.delayed(const Duration(seconds: 10));
         }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uboyniy_cex/bloc/queue_bloc.dart';
 import 'package:uboyniy_cex/presentation/orders/bloc/orders_bloc.dart';
 import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/util/util.dart';
@@ -32,15 +33,20 @@ class OrdersPage extends StatelessWidget {
         ),
         body: BlocBuilder<OrdersBloc, OrdersState>(
           builder: (context, state) => switch (state) {
-            OrdersSuccess(:final orders) => ListView.separated(
-                itemCount: orders.length,
-                itemBuilder: (context, index) => OrderTile(
-                  order: orders[index],
-                ),
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
-                  indent: 32,
-                  endIndent: 32,
+            OrdersSuccess(:final orders) => BlocBuilder<QueueBloc, QueueState>(
+                builder: (context, state) => ListView.separated(
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) => OrderTile(
+                    order: orders[index],
+                    uploading: state.orders
+                        .where((element) => element.id == orders[index].id)
+                        .isNotEmpty,
+                  ),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    indent: 32,
+                    endIndent: 32,
+                  ),
                 ),
               ),
             OrdersError(:final exception) => Center(

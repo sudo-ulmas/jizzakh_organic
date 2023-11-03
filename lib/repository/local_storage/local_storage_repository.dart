@@ -4,8 +4,10 @@ abstract class LocalStorageRepository {
   Future<void> addDocumentToQueue(PostDocumentModel document);
   Future<PostDocumentModel?> getDocumentsHeadFromQueue();
   Future<void> deleteDocumentHeadFromQueue();
+  Future<List<PostDocumentModel>> getAllDocumentsFromQueue();
 
   Future<void> addOrderToQueue(PostOrderModel order);
   Future<PostOrderModel?> getOrdersHeadFromQueue();
   Future<void> deleteOrderHeadFromQueue();
+  Future<List<PostOrderModel>> getAllOrdersFromQueue();
 }
