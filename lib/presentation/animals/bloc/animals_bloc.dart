@@ -14,9 +14,39 @@ class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
   })  : _repository = animalRepository,
         super(const AnimalsState.initial()) {
     on<_AnimalsLoadRequested>((e, emit) => _getAnimals(emit));
+    on<_AnimalsUploaded>(_removeAnimal);
+
+    _repository.uploadedDocumentIds.listen((event) {
+      add(AnimalsEvent.uploaded(event));
+    });
   }
 
   final AnimalRepository _repository;
+
+  Future<void> _removeAnimal(
+    _AnimalsUploaded event,
+    Emitter<AnimalsState> emit,
+  ) async {
+    if (state is AnimalsSuccess) {
+      late int? removeIndex;
+      late AnimalModel? removedAnimal;
+      final animals = List<AnimalModel>.from((state as AnimalsSuccess).animals);
+      animals.removeWhere((element) {
+        if (element.id == event.id) {
+          removeIndex = animals.indexOf(element);
+          removedAnimal = element;
+        }
+        return element.id == event.id;
+      });
+      emit(
+        AnimalsSuccess(
+          animals,
+          removeIndex: removeIndex,
+          removedAnimal: removedAnimal,
+        ),
+      );
+    }
+  }
 
   Future<void> _getAnimals(
     Emitter<AnimalsState> emit,

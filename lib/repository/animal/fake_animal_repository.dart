@@ -43,4 +43,7 @@ class FakeAnimalRepository implements AnimalRepository {
 
   @override
   Stream<PostDocumentModel> get documents => const Stream.empty();
+
+  @override
+  Stream<String> get uploadedDocumentIds => const Stream.empty();
 }

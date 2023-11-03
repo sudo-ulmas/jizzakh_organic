@@ -93,8 +93,8 @@ class _ShipmentPageState extends State<ShipmentPage> {
                   return AnimatedOpacity(
                     opacity: state is ShipmentInitial &&
                             state.shipments.every((element) => element.scanned)
-                        ? 1
-                        : 0,
+                        ? 0
+                        : 1,
                     duration: const Duration(milliseconds: 200),
                     child: SizedBox(
                       width: double.infinity,

@@ -14,7 +14,13 @@ class AnimalRepositoryImpl implements AnimalRepository {
     yield* _documentsStreamController.stream;
   }
 
+  @override
+  Stream<String> get uploadedDocumentIds async* {
+    yield* _uploadedDocumentIdsStreamController.stream;
+  }
+
   final _documentsStreamController = StreamController<PostDocumentModel>();
+  final _uploadedDocumentIdsStreamController = StreamController<String>();
 
   @override
   Future<void> createDocument(
@@ -29,6 +35,7 @@ class AnimalRepositoryImpl implements AnimalRepository {
             'nomenclature': document.toJson(),
           },
         );
+        _uploadedDocumentIdsStreamController.add(document.idNomenclature);
       });
     } on NoInternetException {
       if (requestFromQueue) {

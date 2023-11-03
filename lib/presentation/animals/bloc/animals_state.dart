@@ -8,6 +8,9 @@ class AnimalsState with _$AnimalsState {
 
   const factory AnimalsState.error(AppException exception) = AnimalsError;
 
-  const factory AnimalsState.success(List<AnimalModel> animals) =
-      AnimalsSuccess;
+  const factory AnimalsState.success(
+    List<AnimalModel> animals, {
+    int? removeIndex,
+    AnimalModel? removedAnimal,
+  }) = AnimalsSuccess;
 }

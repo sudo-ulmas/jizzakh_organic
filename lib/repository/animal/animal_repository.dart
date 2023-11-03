@@ -7,4 +7,5 @@ abstract class AnimalRepository {
     bool requestFromQueue = false,
   });
   Stream<PostDocumentModel> get documents;
+  Stream<String> get uploadedDocumentIds;
 }

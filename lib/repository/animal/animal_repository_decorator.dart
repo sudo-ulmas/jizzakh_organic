@@ -31,4 +31,8 @@ class AnimalRepositoryDecorator implements AnimalRepository {
 
   @override
   Stream<PostDocumentModel> get documents => _animalRepositoryImpl.documents;
+
+  @override
+  Stream<String> get uploadedDocumentIds =>
+      _animalRepositoryImpl.uploadedDocumentIds;
 }
