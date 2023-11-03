@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:uboyniy_cex/model/model.dart';
-import 'package:uboyniy_cex/model/movement_order_model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
 
@@ -7,6 +8,14 @@ class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl({required DioClient dioClient}) : _dioClient = dioClient;
 
   final DioClient _dioClient;
+
+  @override
+  Stream<PostOrderModel> get orders async* {
+    yield* _ordersStreamController.stream;
+  }
+
+  final _ordersStreamController = StreamController<PostOrderModel>();
+
   @override
   Future<List<OrderModel>> getOrders() => BaseApiHanlder.request(() async {
         final response = await _dioClient.dio.post<Map<String, dynamic>>(
@@ -30,10 +39,29 @@ class OrderRepositoryImpl implements OrderRepository {
       });
 
   @override
-  Future<void> shipOrder(OrderModel order) => BaseApiHanlder.request(() async {
+  Future<void> shipOrder(
+    PostOrderModel order, {
+    bool requestFromQueue = false,
+  }) async {
+    try {
+      return await BaseApiHanlder.request(() async {
         await _dioClient.dio.post<Map<String, dynamic>>(
-          order.type.url,
-          data: {order.type.idKey: order.id},
+          order.url,
+          data: {order.idKey: order.id},
         );
       });
+    } on NoInternetException {
+      if (requestFromQueue) {
+        rethrow;
+      }
+      _ordersStreamController.add(order);
+    } on TimeoutException {
+      if (requestFromQueue) {
+        rethrow;
+      }
+      _ordersStreamController.add(order);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

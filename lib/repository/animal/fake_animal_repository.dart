@@ -28,14 +28,19 @@ class FakeAnimalRepository implements AnimalRepository {
         title: _animalTitles[rng.nextInt(4)],
         tag: _animalTags[rng.nextInt(4)],
         quantity: 0,
+        idSeries: '',
       );
     });
   }
 
   @override
   Future<void> createDocument(
-    (AnimalModel, List<AnimalPartModel>) nomenclature,
-  ) async {
+    PostDocumentModel documentModel, {
+    bool requestFromQueue = false,
+  }) async {
     await Future<void>.delayed(const Duration(seconds: 1));
   }
+
+  @override
+  Stream<PostDocumentModel> get documents => const Stream.empty();
 }

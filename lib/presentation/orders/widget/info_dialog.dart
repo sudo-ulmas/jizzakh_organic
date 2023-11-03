@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/util/util.dart';
 
 class InfoDialog extends StatelessWidget {
@@ -25,7 +26,7 @@ class InfoDialog extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    ' Передача продукции из производства',
+                    ' ${OrderType.transfer.name}',
                     style: TextStyle(
                       color: context.theme.colorScheme.onSurface,
                     ),
@@ -43,7 +44,7 @@ class InfoDialog extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    ' Реализация товаров и услуг',
+                    ' ${OrderType.sales.name}',
                     style: TextStyle(
                       color: context.theme.colorScheme.onSurface,
                     ),
@@ -61,7 +62,7 @@ class InfoDialog extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    ' Движение продукции и материалов',
+                    ' ${OrderType.movement.name}',
                     style: TextStyle(
                       color: context.theme.colorScheme.onSurface,
                     ),

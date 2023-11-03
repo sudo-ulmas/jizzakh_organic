@@ -1,9 +1,13 @@
 export 'animal_model.dart';
 export 'animal_part_model.dart';
 export 'counting_strategy.dart';
+export 'movement_order_model.dart';
 export 'nomenclature_model.dart';
 export 'order_model.dart';
 export 'order_type.dart';
+export 'post_document_model.dart';
+export 'post_order_model.dart';
+export 'post_product_model.dart';
 export 'sale_order_model.dart';
 export 'shipment_model.dart';
 export 'transfer_order_model.dart';

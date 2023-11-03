@@ -78,7 +78,7 @@ class CreateDocumentPage extends StatelessWidget {
                 child: BlocConsumer<CreateDocumentBloc, CreateDocumentState>(
                   listener: (context, state) {
                     if (state is CreateDocumentSuccess) {
-                      context.go(PagePath.orders);
+                      context.go(PagePath.animals);
                     } else if (state is CreateDocumentError) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

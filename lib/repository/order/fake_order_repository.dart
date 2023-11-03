@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:uboyniy_cex/model/model.dart';
-import 'package:uboyniy_cex/repository/order/order_repository.dart';
+import 'package:uboyniy_cex/repository/repository.dart';
 
 class FakeOrderRepository implements OrderRepository {
   static const _orderReceiverNames = <String>[
@@ -83,7 +83,13 @@ class FakeOrderRepository implements OrderRepository {
   }
 
   @override
-  Future<void> shipOrder(OrderModel order) async {
+  Future<void> shipOrder(
+    PostOrderModel order, {
+    bool requestFromQueue = false,
+  }) async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
   }
+
+  @override
+  Stream<PostOrderModel> get orders => const Stream.empty();
 }

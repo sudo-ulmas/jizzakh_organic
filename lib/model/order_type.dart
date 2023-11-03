@@ -3,13 +3,13 @@ import 'package:uboyniy_cex/util/util.dart';
 
 enum OrderType {
   transfer(
-    name: 'Передача продукции из производства',
+    name: 'Заказ на перемещение',
     color: Colors.blue,
     url: ApiUrl.shipTransformOrder,
     idKey: 'idOrder',
   ),
   movement(
-    name: 'Движение продукции и материалов',
+    name: 'Передача продукции из производства',
     color: Colors.yellow,
     url: ApiUrl.shipMovementOrder,
     idKey: 'idTOPFP',

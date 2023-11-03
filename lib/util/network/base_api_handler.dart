@@ -24,7 +24,8 @@ class BaseApiHanlder {
             case _:
               throw UnkonwnException(statusCode: e.response?.statusCode);
           }
-        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.connectionTimeout ||
+              DioExceptionType.receiveTimeout:
           throw TimeoutException();
         case _:
           throw UnkonwnException(statusCode: e.response?.statusCode);

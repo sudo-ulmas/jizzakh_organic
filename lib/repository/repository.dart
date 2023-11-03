@@ -5,6 +5,8 @@ export 'animal/fake_animal_repository.dart';
 export 'auth/auth_repository.dart';
 export 'auth/auth_repository_impl.dart';
 export 'auth/fake_auth_repository.dart';
+export 'local_storage/hive_local_storage_repository.dart';
+export 'local_storage/local_storage_repository.dart';
 export 'order/fake_order_repository.dart';
 export 'order/order_repository.dart';
 export 'order/order_repository_decorator.dart';

@@ -25,7 +25,9 @@ class CreateDocumentBloc
   ) async {
     try {
       emit(const CreateDocumentState.inProgress());
-      await _repository.createDocument((event.animal, event.animalParts));
+      await _repository.createDocument(
+        PostDocumentModel.fromAnimal(event.animal, event.animalParts),
+      );
       emit(const CreateDocumentState.success());
     } on AppException catch (e) {
       emit(CreateDocumentState.error(e));

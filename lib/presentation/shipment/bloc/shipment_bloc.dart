@@ -34,7 +34,7 @@ class ShipmentBloc extends Bloc<ShipmentEvent, ShipmentState> {
   ) async {
     emit(const ShipmentState.inProgress());
     try {
-      await _repository.shipOrder(event.order);
+      await _repository.shipOrder(PostOrderModel.fromOrder(event.order));
       emit(const ShipmentState.success());
     } on AppException catch (e) {
       emit(ShipmentState.error(e));

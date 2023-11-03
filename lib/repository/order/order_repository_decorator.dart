@@ -1,4 +1,4 @@
-import 'package:uboyniy_cex/model/order_model.dart';
+import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 
 class OrderRepositoryDecorator implements OrderRepository {
@@ -19,7 +19,13 @@ class OrderRepositoryDecorator implements OrderRepository {
   }
 
   @override
-  Future<void> shipOrder(OrderModel order) async {
+  Future<void> shipOrder(
+    PostOrderModel order, {
+    bool requestFromQueue = false,
+  }) async {
     await _orderRepository.shipOrder(order);
   }
+
+  @override
+  Stream<PostOrderModel> get orders => _orderRepository.orders;
 }

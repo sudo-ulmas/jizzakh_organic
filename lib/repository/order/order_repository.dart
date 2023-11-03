@@ -1,7 +1,8 @@
 import 'package:uboyniy_cex/model/model.dart';
 
-// ignore: one_member_abstracts
 abstract class OrderRepository {
   Future<List<OrderModel>> getOrders();
-  Future<void> shipOrder(OrderModel order);
+  Future<void> shipOrder(PostOrderModel order, {bool requestFromQueue = false});
+
+  Stream<PostOrderModel> get orders;
 }

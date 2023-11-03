@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:uboyniy_cex/model/model.dart';
 import 'package:uboyniy_cex/repository/repository.dart';
 import 'package:uboyniy_cex/util/util.dart';
@@ -8,23 +10,40 @@ class AnimalRepositoryImpl implements AnimalRepository {
   final DioClient _dioClient;
 
   @override
+  Stream<PostDocumentModel> get documents async* {
+    yield* _documentsStreamController.stream;
+  }
+
+  final _documentsStreamController = StreamController<PostDocumentModel>();
+
+  @override
   Future<void> createDocument(
-    (AnimalModel, List<AnimalPartModel>) nomenclature,
-  ) =>
-      BaseApiHanlder.request(() async {
+    PostDocumentModel document, {
+    bool requestFromQueue = false,
+  }) async {
+    try {
+      return await BaseApiHanlder.request(() async {
         await _dioClient.dio.post<Map<String, dynamic>>(
           ApiUrl.createDocument,
           data: {
-            'nomenclature': {
-              'id_nomenclature': nomenclature.$1.id,
-              'weight': nomenclature.$1.weight,
-              'products': nomenclature.$2
-                  .map((e) => {'id': e.nomenclature.id, 'count': e.count})
-                  .toList(),
-            },
+            'nomenclature': document.toJson(),
           },
         );
       });
+    } on NoInternetException {
+      if (requestFromQueue) {
+        rethrow;
+      }
+      _documentsStreamController.add(document);
+    } on TimeoutException {
+      if (requestFromQueue) {
+        rethrow;
+      }
+      _documentsStreamController.add(document);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   @override
   Future<List<AnimalModel>> getAnimals() => BaseApiHanlder.request(() async {

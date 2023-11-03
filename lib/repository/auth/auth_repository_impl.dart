@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
       _dioClient.dio.interceptors.add(
         AuthInterceptor(username: username, password: password),
       );
-      return BaseApiHanlder.request(() async {
+      return await BaseApiHanlder.request(() async {
         final response =
             await _dioClient.dio.post<Map<String, dynamic>>(ApiUrl.products);
         final nomenclatures = (response.data!['nomenclatures'] as List)

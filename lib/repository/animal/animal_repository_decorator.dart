@@ -15,13 +15,20 @@ class AnimalRepositoryDecorator implements AnimalRepository {
 
   @override
   Future<void> createDocument(
-    (AnimalModel, List<AnimalPartModel>) nomenclature,
-  ) {
-    return _animalRepositoryImpl.createDocument(nomenclature);
+    PostDocumentModel documentModel, {
+    bool requestFromQueue = false,
+  }) {
+    return _animalRepositoryImpl.createDocument(
+      documentModel,
+      requestFromQueue: requestFromQueue,
+    );
   }
 
   @override
   Future<List<AnimalModel>> getAnimals() {
     return _animalRepositoryImpl.getAnimals();
   }
+
+  @override
+  Stream<PostDocumentModel> get documents => _animalRepositoryImpl.documents;
 }

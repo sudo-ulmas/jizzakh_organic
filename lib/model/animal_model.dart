@@ -10,8 +10,9 @@ class AnimalModel with _$AnimalModel {
   factory AnimalModel({
     required String id,
     @JsonKey(name: 'nomenclature') required String title,
-    @JsonKey(name: 'id_series') required String tag,
-    required int quantity,
+    @JsonKey(name: 'series') required String tag,
+    required String idSeries,
+    required num quantity,
     String? weight,
   }) = _AnimalModel;
 
