@@ -15,7 +15,7 @@ class AnimalModel with _$AnimalModel {
     @HiveField(2) @JsonKey(name: 'series') required String tag,
     @HiveField(3) required String idSeries,
     @HiveField(4) required num quantity,
-    String? weight,
+    @Default('1') String? weight,
   }) = _AnimalModel;
 
   factory AnimalModel.fromJson(Map<String, dynamic> json) =>

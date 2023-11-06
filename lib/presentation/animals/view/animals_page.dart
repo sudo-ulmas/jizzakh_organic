@@ -122,7 +122,7 @@ class AnimalTile extends StatelessWidget {
         onTap: uploading
             ? null
             : () => context.go(
-                  '${PagePath.animals}/${PagePath.animalDetails}',
+                  '${PagePath.animals}/${PagePath.addNomenclature}',
                   extra: animal,
                 ),
         leading: Text(

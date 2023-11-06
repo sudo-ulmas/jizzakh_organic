@@ -64,11 +64,6 @@ class AppRouter {
           ),
           routes: [
             GoRoute(
-              path: PagePath.animalDetails,
-              builder: (context, state) =>
-                  AnimalDetailsPage(animal: state.extra! as AnimalModel),
-            ),
-            GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               path: PagePath.addNomenclature,
               builder: (context, state) =>
