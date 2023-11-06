@@ -61,6 +61,12 @@ class _AnimalsPageState extends State<AnimalsPage> {
                       ?.insertAllItems(0, state.animals.length);
                 }
               }
+            } else if (state is AnimalsError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.exception.message()),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -83,11 +89,25 @@ class _AnimalsPageState extends State<AnimalsPage> {
                     ),
                   ),
                 ),
-              AnimalsError(:final exception) => Center(
-                  child: Text(
-                    exception.message(),
-                    style: context.theme.textTheme.bodyMedium
-                        ?.copyWith(color: context.theme.colorScheme.onSurface),
+              AnimalsEmpty() => SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.pets,
+                        color: Colors.grey,
+                        size: 100,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'В Загоне пусто!',
+                        style: context.theme.textTheme.titleLarge?.copyWith(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                    ],
                   ),
                 ),
               _ => const Center(

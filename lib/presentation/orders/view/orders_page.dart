@@ -55,11 +55,25 @@ class _OrdersPageState extends State<OrdersPage> {
                   ),
                 ),
               ),
-            OrdersError(:final exception) => Center(
-                child: Text(
-                  exception.message(),
-                  style: context.theme.textTheme.bodyLarge
-                      ?.copyWith(color: context.theme.colorScheme.onSurface),
+            OrdersEmpty() => SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.receipt_long,
+                      color: Colors.grey,
+                      size: 100,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Нет активных распоряжений',
+                      style: context.theme.textTheme.titleLarge?.copyWith(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 100),
+                  ],
                 ),
               ),
             _ => const Center(
@@ -94,6 +108,12 @@ class _OrdersPageState extends State<OrdersPage> {
                   _listKey.currentState?.insertAllItems(0, state.orders.length);
                 }
               }
+            } else if (state is OrdersError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.exception.message()),
+                ),
+              );
             }
           },
         ),

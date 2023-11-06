@@ -57,17 +57,28 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   Future<void> _getOrders(
     Emitter<OrdersState> emit,
   ) async {
+    late List<OrderModel> ordersFromLocalDb;
     try {
       emit(const OrdersState.inProgress());
-      final ordersFromLocalDb = await _localStorageRepository.getOrders();
+      ordersFromLocalDb = await _localStorageRepository.getOrders();
       if (ordersFromLocalDb.isNotEmpty) {
         emit(OrdersState.success(ordersFromLocalDb));
       }
       final orders = await _repository.getOrders();
-      emit(OrdersState.success([...orders.$1, ...orders.$2, ...orders.$3]));
+      final orderList = [...orders.$1, ...orders.$2, ...orders.$3];
+      if (orderList.isEmpty) {
+        emit(const OrdersState.empty());
+      } else {
+        emit(OrdersState.success(orderList));
+      }
       await _localStorageRepository.saveOrders(orders);
     } on AppException catch (e) {
       emit(OrdersState.error(e));
+      if (ordersFromLocalDb.isEmpty) {
+        emit(const OrdersState.empty());
+      } else {
+        emit(OrdersState.success(ordersFromLocalDb));
+      }
     }
   }
 

@@ -57,17 +57,27 @@ class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
   Future<void> _getAnimals(
     Emitter<AnimalsState> emit,
   ) async {
+    late List<AnimalModel> animalsFromLocalDb;
     try {
       emit(const AnimalsState.inProgress());
-      final animalsFromLocalDb = await _localStorageRepository.getAnimals();
+      animalsFromLocalDb = await _localStorageRepository.getAnimals();
       if (animalsFromLocalDb.isNotEmpty) {
         emit(AnimalsState.success(animalsFromLocalDb));
       }
       final animals = await _repository.getAnimals();
-      emit(AnimalsState.success(animals));
+      if (animals.isNotEmpty) {
+        emit(AnimalsState.success(animals));
+      } else {
+        emit(const AnimalsState.empty());
+      }
       await _localStorageRepository.saveAnimals(animals);
     } on AppException catch (e) {
       emit(AnimalsState.error(e));
+      if (animalsFromLocalDb.isEmpty) {
+        emit(const AnimalsState.empty());
+      } else {
+        emit(AnimalsState.success(animalsFromLocalDb));
+      }
     }
   }
 

@@ -7,6 +7,7 @@ class OrdersState with _$OrdersState {
   const factory OrdersState.inProgress() = OrdersInProgress;
 
   const factory OrdersState.error(AppException exception) = OrdersError;
+  const factory OrdersState.empty() = OrdersEmpty;
 
   const factory OrdersState.success(
     List<OrderModel> orders, {
