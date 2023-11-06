@@ -92,4 +92,7 @@ class FakeOrderRepository implements OrderRepository {
 
   @override
   Stream<PostOrderModel> get orders => const Stream.empty();
+
+  @override
+  Stream<String> get uploadedOrders => const Stream.empty();
 }

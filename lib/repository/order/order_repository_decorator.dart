@@ -28,4 +28,7 @@ class OrderRepositoryDecorator implements OrderRepository {
 
   @override
   Stream<PostOrderModel> get orders => _orderRepository.orders;
+
+  @override
+  Stream<String> get uploadedOrders => _orderRepository.uploadedOrders;
 }

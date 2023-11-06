@@ -5,4 +5,5 @@ abstract class OrderRepository {
   Future<void> shipOrder(PostOrderModel order, {bool requestFromQueue = false});
 
   Stream<PostOrderModel> get orders;
+  Stream<String> get uploadedOrders;
 }

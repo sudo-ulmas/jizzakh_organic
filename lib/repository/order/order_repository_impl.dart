@@ -14,7 +14,13 @@ class OrderRepositoryImpl implements OrderRepository {
     yield* _ordersStreamController.stream;
   }
 
+  @override
+  Stream<String> get uploadedOrders async* {
+    yield* _uploadedOrderIdsController.stream;
+  }
+
   final _ordersStreamController = StreamController<PostOrderModel>();
+  final _uploadedOrderIdsController = StreamController<String>();
 
   @override
   Future<List<OrderModel>> getOrders() => BaseApiHanlder.request(() async {
@@ -49,6 +55,8 @@ class OrderRepositoryImpl implements OrderRepository {
           order.url,
           data: {order.idKey: order.id},
         );
+
+        _uploadedOrderIdsController.add(order.id);
       });
     } on NoInternetException {
       if (requestFromQueue) {

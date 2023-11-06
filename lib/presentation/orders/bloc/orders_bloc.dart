@@ -14,9 +14,39 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   })  : _repository = orderRepository,
         super(const OrdersState.initial()) {
     on<_OrdersLoadRequested>((e, emit) => _getOrders(emit));
+    on<_OrdersUploaded>(_removeOrder);
+
+    _repository.uploadedOrders.listen((event) {
+      add(OrdersEvent.uploaded(event));
+    });
   }
 
   final OrderRepository _repository;
+
+  Future<void> _removeOrder(
+    _OrdersUploaded event,
+    Emitter<OrdersState> emit,
+  ) async {
+    if (state is OrdersSuccess) {
+      late int? removeIndex;
+      late OrderModel? removedOrder;
+      final orders = List<OrderModel>.from((state as OrdersSuccess).orders);
+      orders.removeWhere((element) {
+        if (element.id == event.id) {
+          removeIndex = orders.indexOf(element);
+          removedOrder = element;
+        }
+        return element.id == event.id;
+      });
+      emit(
+        OrdersSuccess(
+          orders,
+          removeIndex: removeIndex,
+          removedOrder: removedOrder,
+        ),
+      );
+    }
+  }
 
   Future<void> _getOrders(
     Emitter<OrdersState> emit,

@@ -6,8 +6,15 @@ import 'package:uboyniy_cex/presentation/presentation.dart';
 import 'package:uboyniy_cex/util/util.dart';
 import 'package:uboyniy_cex/widget/widget.dart';
 
-class OrdersPage extends StatelessWidget {
+class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
+
+  @override
+  State<OrdersPage> createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  final _listKey = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +38,18 @@ class OrdersPage extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<OrdersBloc, OrdersState>(
+        body: BlocConsumer<OrdersBloc, OrdersState>(
           builder: (context, state) => switch (state) {
             OrdersSuccess(:final orders) => BlocBuilder<QueueBloc, QueueState>(
-                builder: (context, state) => ListView.separated(
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) => OrderTile(
+                builder: (context, state) => AnimatedList(
+                  key: _listKey,
+                  initialItemCount: orders.length,
+                  itemBuilder: (context, index, animation) => OrderTile(
+                    animation: animation,
                     order: orders[index],
                     uploading: state.orders
                         .where((element) => element.id == orders[index].id)
                         .isNotEmpty,
-                  ),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    indent: 32,
-                    endIndent: 32,
                   ),
                 ),
               ),
@@ -59,6 +63,20 @@ class OrdersPage extends StatelessWidget {
             _ => const Center(
                 child: CircularProgressIndicator(),
               )
+          },
+          listener: (BuildContext context, OrdersState state) {
+            if (state is OrdersSuccess) {
+              if (state.removeIndex != null) {
+                _listKey.currentState?.removeItem(
+                  state.removeIndex!,
+                  (context, animation) => OrderTile(
+                    animation: animation,
+                    order: state.removedOrder!,
+                    uploading: true,
+                  ),
+                );
+              }
+            }
           },
         ),
       ),

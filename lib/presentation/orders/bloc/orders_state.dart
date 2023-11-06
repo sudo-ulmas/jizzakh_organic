@@ -8,5 +8,9 @@ class OrdersState with _$OrdersState {
 
   const factory OrdersState.error(AppException exception) = OrdersError;
 
-  const factory OrdersState.success(List<OrderModel> orders) = OrdersSuccess;
+  const factory OrdersState.success(
+    List<OrderModel> orders, {
+    int? removeIndex,
+    OrderModel? removedOrder,
+  }) = OrdersSuccess;
 }
