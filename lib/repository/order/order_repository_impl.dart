@@ -23,7 +23,12 @@ class OrderRepositoryImpl implements OrderRepository {
   final _uploadedOrderIdsController = StreamController<String>.broadcast();
 
   @override
-  Future<List<OrderModel>> getOrders() => BaseApiHanlder.request(() async {
+  Future<
+      (
+        List<SaleOrderModel> sale,
+        List<TransferOrderModel> transfer,
+        List<MovementOrderModel> movement,
+      )> getOrders() => BaseApiHanlder.request(() async {
         final response = await _dioClient.dio.post<Map<String, dynamic>>(
           ApiUrl.orders,
           data: {},
@@ -35,13 +40,16 @@ class OrderRepositoryImpl implements OrderRepository {
           data: {},
         );
         final transferOrders = (response.data!['docOrders'] as List)
-            .map((e) => TransferOrderModel.fromJson(e as Map<String, dynamic>));
+            .map((e) => TransferOrderModel.fromJson(e as Map<String, dynamic>))
+            .toList();
         final salesOrders = (response.data!['docsale'] as List)
-            .map((e) => SaleOrderModel.fromJson(e as Map<String, dynamic>));
+            .map((e) => SaleOrderModel.fromJson(e as Map<String, dynamic>))
+            .toList();
         final movementOrders = (movementResponse.data!['docTOPFP'] as List)
-            .map((e) => MovementOrderModel.fromJson(e as Map<String, dynamic>));
+            .map((e) => MovementOrderModel.fromJson(e as Map<String, dynamic>))
+            .toList();
 
-        return [...transferOrders, ...salesOrders, ...movementOrders];
+        return (salesOrders, transferOrders, movementOrders);
       });
 
   @override

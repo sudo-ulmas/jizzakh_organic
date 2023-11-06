@@ -9,13 +9,18 @@ class OrderRepositoryDecorator implements OrderRepository {
         _fakeOrderRepository = fakeOrderRepository;
 
   final OrderRepository _orderRepository;
+  // ignore: unused_field
   final OrderRepository _fakeOrderRepository;
   @override
-  Future<List<OrderModel>> getOrders() async {
-    final fakeOrders = await _fakeOrderRepository.getOrders();
+  Future<
+      (
+        List<SaleOrderModel> sale,
+        List<TransferOrderModel> transfer,
+        List<MovementOrderModel> movement,
+      )> getOrders() async {
     final orders = await _orderRepository.getOrders();
 
-    return [fakeOrders.first, ...orders];
+    return orders;
   }
 
   @override

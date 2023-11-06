@@ -31,13 +31,19 @@ class FakeOrderRepository implements OrderRepository {
   ];
 
   @override
-  Future<List<OrderModel>> getOrders() async {
+  Future<
+      (
+        List<SaleOrderModel> sale,
+        List<TransferOrderModel> transfer,
+        List<MovementOrderModel> movement,
+      )> getOrders() async {
     await Future<void>.delayed(const Duration(milliseconds: 100));
     final rng = Random();
-    final orders = <OrderModel>[];
+    final saleOrders = <SaleOrderModel>[];
+    final transferOrders = <TransferOrderModel>[];
     for (var i = 0; i < 100; i += 1) {
       if (i % 3 == 0) {
-        orders.add(
+        saleOrders.add(
           SaleOrderModel(
             id: '${i + 1}',
             receiverName: _orderReceiverNames[rng.nextInt(4)],
@@ -47,7 +53,7 @@ class FakeOrderRepository implements OrderRepository {
           ),
         );
       } else {
-        orders.add(
+        transferOrders.add(
           TransferOrderModel(
             id: '${i + 1}',
             receiverName: _orderReceiverNames[rng.nextInt(4)],
@@ -58,7 +64,7 @@ class FakeOrderRepository implements OrderRepository {
         );
       }
     }
-    return orders;
+    return (saleOrders, transferOrders, <MovementOrderModel>[]);
   }
 
   List<ShipmentModel> getShipments() {

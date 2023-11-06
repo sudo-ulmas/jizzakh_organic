@@ -11,7 +11,11 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
       ..registerAdapter(PostProductModelAdapter())
       ..registerAdapter(PostDocumentModelAdapter())
       ..registerAdapter(PostOrderModelAdapter())
-      ..registerAdapter(AnimalModelAdapter());
+      ..registerAdapter(AnimalModelAdapter())
+      ..registerAdapter(ShipmentModelAdapter())
+      ..registerAdapter(SaleOrderModelAdapter())
+      ..registerAdapter(TransferOrderModelAdapter())
+      ..registerAdapter(MovementOrderModelAdapter());
 
     return HiveLocalStorageRepository._();
   }
@@ -19,6 +23,9 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
   static const _documentQueueBox = 'document_queue';
   static const _orderQueueBox = 'order_queue';
   static const _animalsBox = 'animals';
+  static const _saleOrdersBox = 'sale_orders';
+  static const _transferOrdersBox = 'transfer_orders';
+  static const _movementOrdersBox = 'movemvent_orders';
 
   @override
   Future<void> addDocumentToQueue(PostDocumentModel document) async {
@@ -79,5 +86,41 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
   Future<List<AnimalModel>> getAnimals() async {
     final box = await Hive.openBox<AnimalModel>(_animalsBox);
     return box.values.toList();
+  }
+
+  @override
+  Future<List<OrderModel>> getOrders() async {
+    final saleOrderBox = await Hive.openBox<SaleOrderModel>(_saleOrdersBox);
+    final trasferOrderBox =
+        await Hive.openBox<TransferOrderModel>(_transferOrdersBox);
+    final movementOrderBox =
+        await Hive.openBox<MovementOrderModel>(_movementOrdersBox);
+
+    return [
+      ...saleOrderBox.values,
+      ...trasferOrderBox.values,
+      ...movementOrderBox.values
+    ];
+  }
+
+  @override
+  Future<void> saveOrders(
+    (
+      List<SaleOrderModel> saleOrders,
+      List<TransferOrderModel> transferOrders,
+      List<MovementOrderModel> movementOrders,
+    ) orders,
+  ) async {
+    final saleOrderBox = await Hive.openBox<SaleOrderModel>(_saleOrdersBox);
+    final trasferOrderBox =
+        await Hive.openBox<TransferOrderModel>(_transferOrdersBox);
+    final movementOrderBox =
+        await Hive.openBox<MovementOrderModel>(_movementOrdersBox);
+    await saleOrderBox.clear();
+    await saleOrderBox.addAll(orders.$1);
+    await trasferOrderBox.clear();
+    await trasferOrderBox.addAll(orders.$2);
+    await movementOrderBox.clear();
+    await movementOrderBox.addAll(orders.$3);
   }
 }

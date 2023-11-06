@@ -19,8 +19,10 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrdersBloc(orderRepository: context.read())
-        ..add(const OrdersEvent.loadOrders()),
+      create: (context) => OrdersBloc(
+        orderRepository: context.read(),
+        localStorageRepository: context.read(),
+      )..add(const OrdersEvent.loadOrders()),
       child: Scaffold(
         appBar: SharedAppbar(
           title: 'Распоряжения',
@@ -75,6 +77,22 @@ class _OrdersPageState extends State<OrdersPage> {
                     uploading: true,
                   ),
                 );
+              } else {
+                final listItemCount =
+                    _listKey.currentState?.widget.initialItemCount ??
+                        state.orders.length;
+                var newItemCount = state.orders.length - listItemCount;
+                while (newItemCount > 0) {
+                  _listKey.currentState?.insertItem(0);
+                  newItemCount -= 1;
+                }
+                final oldItemCount = listItemCount - state.orders.length;
+                if (oldItemCount > 0) {
+                  _listKey.currentState?.removeAllItems(
+                    (context, animation) => const SizedBox(),
+                  );
+                  _listKey.currentState?.insertAllItems(0, state.orders.length);
+                }
               }
             }
           },

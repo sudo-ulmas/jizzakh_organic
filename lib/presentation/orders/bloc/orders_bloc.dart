@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uboyniy_cex/model/model.dart';
@@ -9,19 +11,23 @@ part 'orders_state.dart';
 part 'orders_bloc.freezed.dart';
 
 class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
-  OrdersBloc({
-    required OrderRepository orderRepository,
-  })  : _repository = orderRepository,
+  OrdersBloc(
+      {required OrderRepository orderRepository,
+      required LocalStorageRepository localStorageRepository})
+      : _repository = orderRepository,
+        _localStorageRepository = localStorageRepository,
         super(const OrdersState.initial()) {
     on<_OrdersLoadRequested>((e, emit) => _getOrders(emit));
     on<_OrdersUploaded>(_removeOrder);
 
-    _repository.uploadedOrders.listen((event) {
+    _streamSubscription = _repository.uploadedOrders.listen((event) {
       add(OrdersEvent.uploaded(event));
     });
   }
 
   final OrderRepository _repository;
+  final LocalStorageRepository _localStorageRepository;
+  late StreamSubscription<String> _streamSubscription;
 
   Future<void> _removeOrder(
     _OrdersUploaded event,
@@ -53,10 +59,21 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   ) async {
     try {
       emit(const OrdersState.inProgress());
+      final ordersFromLocalDb = await _localStorageRepository.getOrders();
+      if (ordersFromLocalDb.isNotEmpty) {
+        emit(OrdersState.success(ordersFromLocalDb));
+      }
       final orders = await _repository.getOrders();
-      emit(OrdersState.success(orders));
+      emit(OrdersState.success([...orders.$1, ...orders.$2, ...orders.$3]));
+      await _localStorageRepository.saveOrders(orders);
     } on AppException catch (e) {
       emit(OrdersState.error(e));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _streamSubscription.cancel();
+    return super.close();
   }
 }

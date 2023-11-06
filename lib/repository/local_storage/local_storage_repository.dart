@@ -13,4 +13,13 @@ abstract class LocalStorageRepository {
 
   Future<void> saveAnimals(List<AnimalModel> animals);
   Future<List<AnimalModel>> getAnimals();
+
+  Future<void> saveOrders(
+    (
+      List<SaleOrderModel> saleOrders,
+      List<TransferOrderModel> transferOrders,
+      List<MovementOrderModel> movementOrders,
+    ) orders,
+  );
+  Future<List<OrderModel>> getOrders();
 }
