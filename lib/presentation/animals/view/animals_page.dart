@@ -28,6 +28,7 @@ class _AnimalsPageState extends State<AnimalsPage> {
       body: BlocProvider(
         create: (context) => AnimalsBloc(
           animalRepository: context.read<AnimalRepository>(),
+          localStorageRepository: context.read(),
         )..add(const AnimalsEvent.loadAnimals()),
         child: BlocConsumer<AnimalsBloc, AnimalsState>(
           listener: (context, state) {
@@ -42,6 +43,23 @@ class _AnimalsPageState extends State<AnimalsPage> {
                     uploading: true,
                   ),
                 );
+              } else {
+                final listItemCount =
+                    _listKey.currentState?.widget.initialItemCount ??
+                        state.animals.length;
+                var newItemCount = state.animals.length - listItemCount;
+                while (newItemCount > 0) {
+                  _listKey.currentState?.insertItem(0);
+                  newItemCount -= 1;
+                }
+                final oldItemCount = listItemCount - state.animals.length;
+                if (oldItemCount > 0) {
+                  _listKey.currentState?.removeAllItems(
+                    (context, animation) => const SizedBox(),
+                  );
+                  _listKey.currentState
+                      ?.insertAllItems(0, state.animals.length);
+                }
               }
             }
           },

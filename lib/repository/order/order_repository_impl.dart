@@ -20,7 +20,7 @@ class OrderRepositoryImpl implements OrderRepository {
   }
 
   final _ordersStreamController = StreamController<PostOrderModel>();
-  final _uploadedOrderIdsController = StreamController<String>();
+  final _uploadedOrderIdsController = StreamController<String>.broadcast();
 
   @override
   Future<List<OrderModel>> getOrders() => BaseApiHanlder.request(() async {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uboyniy_cex/model/model.dart';
@@ -9,19 +11,23 @@ part 'animals_state.dart';
 part 'animals_bloc.freezed.dart';
 
 class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
-  AnimalsBloc({
-    required AnimalRepository animalRepository,
-  })  : _repository = animalRepository,
+  AnimalsBloc(
+      {required AnimalRepository animalRepository,
+      required LocalStorageRepository localStorageRepository})
+      : _repository = animalRepository,
+        _localStorageRepository = localStorageRepository,
         super(const AnimalsState.initial()) {
     on<_AnimalsLoadRequested>((e, emit) => _getAnimals(emit));
     on<_AnimalsUploaded>(_removeAnimal);
 
-    _repository.uploadedDocumentIds.listen((event) {
+    _subscription = _repository.uploadedDocumentIds.listen((event) {
       add(AnimalsEvent.uploaded(event));
     });
   }
 
   final AnimalRepository _repository;
+  final LocalStorageRepository _localStorageRepository;
+  late StreamSubscription<String> _subscription;
 
   Future<void> _removeAnimal(
     _AnimalsUploaded event,
@@ -53,10 +59,21 @@ class AnimalsBloc extends Bloc<AnimalsEvent, AnimalsState> {
   ) async {
     try {
       emit(const AnimalsState.inProgress());
+      final animalsFromLocalDb = await _localStorageRepository.getAnimals();
+      if (animalsFromLocalDb.isNotEmpty) {
+        emit(AnimalsState.success(animalsFromLocalDb));
+      }
       final animals = await _repository.getAnimals();
       emit(AnimalsState.success(animals));
+      await _localStorageRepository.saveAnimals(animals);
     } on AppException catch (e) {
       emit(AnimalsState.error(e));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

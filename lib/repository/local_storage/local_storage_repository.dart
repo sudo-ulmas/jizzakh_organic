@@ -10,4 +10,7 @@ abstract class LocalStorageRepository {
   Future<PostOrderModel?> getOrdersHeadFromQueue();
   Future<void> deleteOrderHeadFromQueue();
   Future<List<PostOrderModel>> getAllOrdersFromQueue();
+
+  Future<void> saveAnimals(List<AnimalModel> animals);
+  Future<List<AnimalModel>> getAnimals();
 }

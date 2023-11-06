@@ -10,13 +10,15 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
     Hive
       ..registerAdapter(PostProductModelAdapter())
       ..registerAdapter(PostDocumentModelAdapter())
-      ..registerAdapter(PostOrderModelAdapter());
+      ..registerAdapter(PostOrderModelAdapter())
+      ..registerAdapter(AnimalModelAdapter());
 
     return HiveLocalStorageRepository._();
   }
 
   static const _documentQueueBox = 'document_queue';
   static const _orderQueueBox = 'order_queue';
+  static const _animalsBox = 'animals';
 
   @override
   Future<void> addDocumentToQueue(PostDocumentModel document) async {
@@ -63,6 +65,19 @@ class HiveLocalStorageRepository implements LocalStorageRepository {
   @override
   Future<List<PostOrderModel>> getAllOrdersFromQueue() async {
     final box = await Hive.openBox<PostOrderModel>(_orderQueueBox);
+    return box.values.toList();
+  }
+
+  @override
+  Future<void> saveAnimals(List<AnimalModel> animals) async {
+    final box = await Hive.openBox<AnimalModel>(_animalsBox);
+    await box.clear();
+    await box.addAll(animals);
+  }
+
+  @override
+  Future<List<AnimalModel>> getAnimals() async {
+    final box = await Hive.openBox<AnimalModel>(_animalsBox);
     return box.values.toList();
   }
 }

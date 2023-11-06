@@ -20,7 +20,8 @@ class AnimalRepositoryImpl implements AnimalRepository {
   }
 
   final _documentsStreamController = StreamController<PostDocumentModel>();
-  final _uploadedDocumentIdsStreamController = StreamController<String>();
+  final _uploadedDocumentIdsStreamController =
+      StreamController<String>.broadcast();
 
   @override
   Future<void> createDocument(

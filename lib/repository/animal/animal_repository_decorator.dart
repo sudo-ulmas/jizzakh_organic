@@ -25,7 +25,7 @@ class AnimalRepositoryDecorator implements AnimalRepository {
   }
 
   @override
-  Future<List<AnimalModel>> getAnimals() {
+  Future<List<AnimalModel>> getAnimals() async {
     return _animalRepositoryImpl.getAnimals();
   }
 
